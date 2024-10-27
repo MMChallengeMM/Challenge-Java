@@ -7,7 +7,7 @@ import com.challengemm.models.*;
 
 public class Main {
 
-    private final static List<Falha> todasFalhas = new ArrayList<>();
+    private static final HistoricoFalhas todasFalhas = new HistoricoFalhas();
 
     public static void main(String[] args) {
 
@@ -38,15 +38,15 @@ public class Main {
     }
 
     public static List<Falha> getTodasFalhas() {
-        return new ArrayList<>(todasFalhas);
+        return new ArrayList<>(todasFalhas.getFalhas());
     }
 
     public static void addFalhaNoSistema(Falha falha) {
-        todasFalhas.add(falha);
+        todasFalhas.addFalha(falha);
     }
 
     public static void removeFalhaNoSistema(Falha falha) {
-        todasFalhas.remove(falha);
+        todasFalhas.removeFalha(falha);
     }
 
 }

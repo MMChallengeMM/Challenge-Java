@@ -53,6 +53,10 @@ public class HistoricoFalhas {
         this.falhas = falhas;
     }
 
+    public HistoricoFalhas(HistoricoFalhas historicoFalhas) {
+        this.falhas = historicoFalhas.getFalhas();
+    }
+
     public List<Falha> getFalhas() {
         return falhas;
     }

@@ -15,15 +15,12 @@ public class Falha {
     private STATUS_FALHA statusFalha;
 
     public String exibirFalha() {
-        return "#%s (%s) | %s | %s: %s\n".formatted(
+        return "#%s (%s) | %s | %s: %s".formatted(
                 idFalha,
                 statusFalha,
                 dataRegitro.format(DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm")),
                 tipoFalha,
                 descricaoFalha);
-    }
-
-    public Falha() {
     }
 
     public Falha(TIPO_FALHA tipoFalha, String descricaoFalha) {
@@ -35,7 +32,7 @@ public class Falha {
         Main.addFalhaNoSistema(this);
     }
 
-    public Falha(TIPO_FALHA tipoFalha, String descricaoFalha, Equipamento equipamento) {
+    public Falha(TIPO_FALHA tipoFalha, Equipamento equipamento, String descricaoFalha) {
         this.idFalha = String.valueOf(Main.getTodasFalhas().size() + 1);
         this.tipoFalha = tipoFalha;
         this.descricaoFalha = descricaoFalha;

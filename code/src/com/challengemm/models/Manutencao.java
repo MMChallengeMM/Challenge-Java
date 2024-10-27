@@ -19,7 +19,8 @@ public class Manutencao {
                 Status: %s
                 Data: (%s) - (%s)
                 ========================
-                Falha %s========================
+                Falha %s
+                ========================
                 Descrição:
                 %s
                 """, idManutencao, statusManutencao,

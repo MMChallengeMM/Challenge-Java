@@ -15,7 +15,7 @@ public abstract class Usuario {
         var scanner = new Scanner(System.in);
         switch (tipoRelatorio) {
             case GERAL:
-                new Relatorio("ID",historicoFalhas).exibirRelatorio();
+                new Relatorio("ID", historicoFalhas).exibirRelatorio();
                 break;
             case PERIODO:
                 var formatadorData = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm");
@@ -26,14 +26,14 @@ public abstract class Usuario {
                 System.out.println("Digite a data final (dd/MM/yy):");
                 var dataFinal = LocalDateTime.parse(scanner.next() + " 23:59", formatadorData);
 
-                new Relatorio("ID",historicoFalhas,dataInicial,dataFinal).exibirRelatorio();
+                new Relatorio("ID", historicoFalhas, dataInicial, dataFinal).exibirRelatorio();
                 break;
             case TIPO_DE_FALHA:
                 System.out.println("Digite o tipo de falha:");
                 var tipoFalha = TIPO_FALHA.valueOf(Normalizer.normalize(scanner.next().toUpperCase(), Normalizer.Form.NFD)
                         .replaceAll("\\p{M}", ""));
 
-                new Relatorio("ID",historicoFalhas,tipoFalha).exibirRelatorio();
+                new Relatorio("ID", historicoFalhas, tipoFalha).exibirRelatorio();
                 break;
         }
     }

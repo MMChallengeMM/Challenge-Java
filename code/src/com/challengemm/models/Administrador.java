@@ -6,6 +6,10 @@ import java.util.Objects;
 public class Administrador extends Usuario{
     private int nivelAcesso;
 
+    public void criarNovaFalha(TIPO_FALHA tipoFalha, Equipamento equipamento, String descricao) {
+        new Falha(tipoFalha, equipamento, descricao);
+    }
+
     public Administrador() {
     }
 

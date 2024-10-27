@@ -25,4 +25,4 @@
   2. Falhas: Cada falha poderá pertencer a uma manutenção;
   3. Histórico de falha: Organizará as falhas;
   4. Manutenção: Responsável por registrar as resoluções das falhas;
-  5. Relatório: Exibir um conceito geral do sistema de acordo com um histórico de falha.
+  5. Relatório: Exibir um conteúdo geral do sistema de acordo com um histórico de falha.

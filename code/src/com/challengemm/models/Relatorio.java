@@ -78,10 +78,10 @@ public class Relatorio {
                     .subList(0, 5);
         }
 
-        var ultimasFalhasFormatado = "";
+        StringBuilder ultimasFalhasFormatado = new StringBuilder();
 
         for (var falha : ultimasFalhas) {
-            ultimasFalhasFormatado += falha.exibirFalha();
+            ultimasFalhasFormatado.append(falha.exibirFalha()).append("\n");
         }
 
         return """
@@ -89,7 +89,7 @@ public class Relatorio {
                 Número total de falhas: %d
                 Ultimas falhas:
                 %s
-                """.formatted(falhaMaisFrequente == null ? "Não há falhas" : falhaMaisFrequente.getKey(), numeroTotalFalhas, ultimasFalhasFormatado);
+                """.formatted(falhaMaisFrequente == null ? "Não há falhas" : falhaMaisFrequente.getKey(), numeroTotalFalhas, ultimasFalhasFormatado.toString());
     }
 
 
