@@ -1,6 +1,7 @@
 package com.challengemm.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Manutencao {
@@ -9,16 +10,42 @@ public class Manutencao {
     private LocalDateTime dataFim;
     private STATUS_MANUTENCAO statusManutencao;
     private Falha falhaParaResolver;
+    private String descricaoManutencao;
+
+    public void exibirManutencao() {
+        System.out.printf("""
+                
+                Manutenção #%s
+                Status: %s
+                Data: (%s) - (%s)
+                ========================
+                Falha %s========================
+                Descrição:
+                %s
+                """, idManutencao, statusManutencao,
+                dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yy")),
+                dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yy")), falhaParaResolver.exibirFalha(),descricaoManutencao);
+    }
+
 
     public Manutencao() {
     }
 
-    public Manutencao(String idManutencao, LocalDateTime dataInicio, LocalDateTime dataFim, STATUS_MANUTENCAO statusManutencao, Falha falhaParaResolver) {
+    public Manutencao(String idManutencao, LocalDateTime dataInicio, LocalDateTime dataFim, Falha falhaParaResolver, String descricaoManutencao) {
         this.idManutencao = idManutencao;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.statusManutencao = statusManutencao;
+
+        if (this.dataFim.isBefore(LocalDateTime.now())) {
+            this.statusManutencao = STATUS_MANUTENCAO.CONCLUIDA;
+        } else if (this.dataInicio.isBefore(LocalDateTime.now())) {
+            this.statusManutencao = STATUS_MANUTENCAO.EM_PROCESSO;
+        } else {
+            this.statusManutencao = STATUS_MANUTENCAO.AGUARDANDO;
+        }
+
         this.falhaParaResolver = falhaParaResolver;
+        this.descricaoManutencao = descricaoManutencao;
     }
 
     public String getIdManutencao() {

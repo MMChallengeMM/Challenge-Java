@@ -85,7 +85,6 @@ public class Relatorio {
         }
 
         return """
-                
                 Tipo de falha mais frequente: %s
                 Número total de falhas: %d
                 Ultimas falhas:

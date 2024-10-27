@@ -1,8 +1,14 @@
 package com.challengemm.main;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import com.challengemm.models.*;
 
 public class Main {
+
+    private final static List<Falha> todasFalhas = new ArrayList<>();
+
     public static void main(String[] args) {
 
         var estacao1 = new Estacao("1","Estação da Sé","Rua da Sé");
@@ -18,17 +24,29 @@ public class Main {
 
         var operador1 = new Operador("1","Carlos",TURNO_USUARIO.MANHA,"Administração Geral");
 
-        equip1.getHistoricoFalhas().addFalha(new Falha("1", TIPO_FALHA.ELETRICA,"a"));
-        equip1.getHistoricoFalhas().addFalha(new Falha("2",TIPO_FALHA.SOFTWARE,"b"));
-        equip1.getHistoricoFalhas().addFalha(new Falha("3",TIPO_FALHA.MECANICA,"c"));
-        equip1.getHistoricoFalhas().addFalha(new Falha("4",TIPO_FALHA.OUTRO,"d"));
-        equip1.getHistoricoFalhas().addFalha(new Falha("5",TIPO_FALHA.SOFTWARE,"e"));
-        equip1.getHistoricoFalhas().addFalha(new Falha("6",TIPO_FALHA.ELETRICA,"f"));
-        equip1.getHistoricoFalhas().addFalha(new Falha("7",TIPO_FALHA.SOFTWARE,"g"));
+        equip1.getHistoricoFalhas().addFalha(TIPO_FALHA.ELETRICA,"a");
+        equip1.getHistoricoFalhas().addFalha(TIPO_FALHA.SOFTWARE,"b");
+        equip1.getHistoricoFalhas().addFalha(TIPO_FALHA.MECANICA,"c");
+        equip1.getHistoricoFalhas().addFalha(TIPO_FALHA.OUTRO,"d");
+        equip1.getHistoricoFalhas().addFalha(TIPO_FALHA.SOFTWARE,"e");
+        equip1.getHistoricoFalhas().addFalha(TIPO_FALHA.ELETRICA,"f");
+        equip1.getHistoricoFalhas().addFalha(TIPO_FALHA.SOFTWARE,"g");
 
-        operador1.gerarNovoRelatorio(TIPO_RELATORIO.TIPO_DE_FALHA,equip1.getHistoricoFalhas());
+        new Manutencao("ID", LocalDateTime.now().minusDays(4), LocalDateTime.now().minusDays(2),equip1.getHistoricoFalhas().getFalhas().getLast(),"Era um parafuso que faltava").exibirManutencao();
 
-
-
+        operador1.gerarNovoRelatorio(TIPO_RELATORIO.GERAL,equip1.getHistoricoFalhas());
     }
+
+    public static List<Falha> getTodasFalhas() {
+        return new ArrayList<>(todasFalhas);
+    }
+
+    public static void addFalhaNoSistema(Falha falha) {
+        todasFalhas.add(falha);
+    }
+
+    public static void removeFalhaNoSistema(Falha falha) {
+        todasFalhas.remove(falha);
+    }
+
 }

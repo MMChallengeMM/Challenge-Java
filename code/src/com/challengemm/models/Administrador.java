@@ -2,6 +2,7 @@ package com.challengemm.models;
 
 import java.util.Objects;
 
+
 public class Administrador extends Usuario{
     private int nivelAcesso;
 

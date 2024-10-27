@@ -1,6 +1,9 @@
 package com.challengemm.models;
 
+import com.challengemm.main.Main;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Falha {
@@ -12,18 +15,34 @@ public class Falha {
     private STATUS_FALHA statusFalha;
 
     public String exibirFalha() {
-        return "#%s (%s) | %s | %s: %s\n".formatted(idFalha,statusFalha,dataRegitro,tipoFalha,descricaoFalha);
+        return "#%s (%s) | %s | %s: %s\n".formatted(
+                idFalha,
+                statusFalha,
+                dataRegitro.format(DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm")),
+                tipoFalha,
+                descricaoFalha);
     }
 
     public Falha() {
     }
 
-    public Falha(String idFalha, TIPO_FALHA tipoFalha, String descricaoFalha) {
-        this.idFalha = idFalha;
+    public Falha(TIPO_FALHA tipoFalha, String descricaoFalha) {
+        this.idFalha = String.valueOf(Main.getTodasFalhas().size() + 1);
         this.tipoFalha = tipoFalha;
         this.descricaoFalha = descricaoFalha;
         this.dataRegitro = LocalDateTime.now();
         this.statusFalha = STATUS_FALHA.EM_ANALISE;
+        Main.addFalhaNoSistema(this);
+    }
+
+    public Falha(TIPO_FALHA tipoFalha, String descricaoFalha, Equipamento equipamento) {
+        this.idFalha = String.valueOf(Main.getTodasFalhas().size() + 1);
+        this.tipoFalha = tipoFalha;
+        this.descricaoFalha = descricaoFalha;
+        this.dataRegitro = LocalDateTime.now();
+        this.statusFalha = STATUS_FALHA.EM_ANALISE;
+        equipamento.getHistoricoFalhas().addFalha(this);
+        Main.addFalhaNoSistema(this);
     }
 
     public String getIdFalha() {

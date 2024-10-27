@@ -8,6 +8,10 @@ import java.util.Objects;
 public class HistoricoFalhas {
     private List<Falha> falhas = new ArrayList<>();
 
+    public void addFalha(TIPO_FALHA tipoFalha,String descricaoFalha) {
+        falhas.add(new Falha(tipoFalha,descricaoFalha));
+    }
+
     public void addFalha(Falha falha) {
         falhas.add(falha);
     }
