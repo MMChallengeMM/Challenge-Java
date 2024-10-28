@@ -5,7 +5,7 @@
 
 ## Representantes
 - Arthur Ribeiro (560417)
-- João Vincius Alves (559369)
+- João Vinicius Alves (559369)
 - Juan Pablo (560445)
 
 ---
