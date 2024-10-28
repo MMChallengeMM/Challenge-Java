@@ -80,3 +80,5 @@
       - Tipo de relatório( GERAL, PERIODO, TIPO_DE_FALHA );
       - Tipo de vagão( CARGA, PASSAGEIRO, TANQUE, GONDOLA, PLATAFORMA, FRIGORIFICO, BOVINO, POSTAL );
       - Turno do usuário( MANHA, TARDE, NOITE );
+
+---
