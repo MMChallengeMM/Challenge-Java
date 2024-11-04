@@ -26,9 +26,6 @@ public class Linha extends MecanismoDaFerrovia {
 
     //Métodos Gerais
 
-    public Linha() {
-    }
-
     public Linha(String nome) {
         super(nome);
     }

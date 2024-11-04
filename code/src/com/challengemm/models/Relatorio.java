@@ -4,27 +4,43 @@ import com.challengemm.main.Main;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Relatorio {
     private final String idRelatorio;
     private final TIPO_RELATORIO tipoRelatorio;
     private final LocalDateTime dataGeracao;
+    private TIPO_FALHA tipoFalhaPrincipal;
+    private List<Falha> totalFalhas = new ArrayList<>();
     private String dadosRelatorio;
 
     public void exibirRelatorio() {
+
+        var numeroFalhas = totalFalhas.size();
+
+        StringBuilder ultimasFalhasFormatado = new StringBuilder();
+
+        for (var falha : totalFalhas) {
+            ultimasFalhasFormatado.append(falha.exibirFalha()).append("\n");
+        }
+
         System.out.printf("""
                 
                 Relatório #%s
                 Tipo de Relatório: %s
                 Data: %s
                 ========================
+                Tipo de falha mais frequente: %s
+                Número total de falhas: %d
+                Ultimas falhas:
                 %s
-                """, idRelatorio, tipoRelatorio, dataGeracao.format(DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm")), dadosRelatorio);
+                """, idRelatorio,
+                tipoRelatorio,
+                dataGeracao.format(DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm")),
+                tipoFalhaPrincipal,
+                numeroFalhas,
+                ultimasFalhasFormatado);
     }
 
     private String gerarDadosGeral(HistoricoFalhas historicoFalhas) {
@@ -66,6 +82,10 @@ public class Relatorio {
                 .max(Map.Entry.comparingByValue())
                 .orElse(null);
 
+        if (falhaMaisFrequente != null) {
+            this.tipoFalhaPrincipal = falhaMaisFrequente.getKey();
+        }
+
         List<Falha> ultimasFalhas;
 
         if (falhas.size() < 5) {
@@ -79,6 +99,8 @@ public class Relatorio {
                     .toList().reversed()
                     .subList(0, 5);
         }
+
+        this.totalFalhas = ultimasFalhas;
 
         StringBuilder ultimasFalhasFormatado = new StringBuilder();
 
