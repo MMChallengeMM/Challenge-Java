@@ -46,13 +46,7 @@ public class Main {
         operador1.gerarNovoRelatorio(TIPO_RELATORIO.GERAL,equip1.getHistoricoFalhas());
 
         System.out.println();
-        System.out.println(todasFalhas);
-        System.out.println(todasManutencoes);
-        System.out.println(todosEquipamentos);
-        System.out.println(todosTrens);
-        System.out.println(todosMecanismos);
         System.out.println(todosUsuarios);
-        System.out.println(todosRelatorios);
     }
 
     public static List<Falha> getTodasFalhas() {

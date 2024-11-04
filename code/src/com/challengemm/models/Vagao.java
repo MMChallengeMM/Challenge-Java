@@ -9,9 +9,6 @@ public class Vagao extends MecanismoDaFerrovia{
 
     //Métodos Gerais
 
-    public Vagao() {
-    }
-
     public Vagao(String nome, TIPO_VAGAO tipoVagao) {
         super(nome);
         this.tipoVagao = tipoVagao;

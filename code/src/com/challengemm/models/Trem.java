@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Trem {
 
-    private String idTrem;
+    private final String idTrem;
     private List<Vagao> vagoes = new ArrayList<>();
 
     public void addVagao(Vagao vagao) {

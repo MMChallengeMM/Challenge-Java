@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Manutencao {
-    private String idManutencao;
+    private final String idManutencao;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
     private STATUS_MANUTENCAO statusManutencao;
@@ -30,10 +30,6 @@ public class Manutencao {
                 dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yy")), falhaParaResolver.exibirFalha(),descricaoManutencao);
     }
 
-
-    public Manutencao() {
-    }
-
     public Manutencao(LocalDateTime dataInicio, LocalDateTime dataFim, Falha falhaParaResolver, String descricaoManutencao) {
         this.idManutencao = String.valueOf(Main.getTodasManutencoes().size() + 1);
         this.dataInicio = dataInicio;
@@ -54,10 +50,6 @@ public class Manutencao {
 
     public String getIdManutencao() {
         return idManutencao;
-    }
-
-    public void setIdManutencao(String idManutencao) {
-        this.idManutencao = idManutencao;
     }
 
     public LocalDateTime getDataInicio() {

@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public abstract class MecanismoDaFerrovia {
 
-    private String id;
+    private final String id;
     private String nome;
     private List<Equipamento> equipamentos = new ArrayList<>();
 
@@ -22,8 +22,6 @@ public abstract class MecanismoDaFerrovia {
 
     // Métodos Gerais
 
-    public MecanismoDaFerrovia() {
-    }
 
     public MecanismoDaFerrovia(String nome) {
         this.id = String.valueOf(Main.getTodosMecanismos().size() + 1);

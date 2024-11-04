@@ -11,9 +11,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Relatorio {
-    private String idRelatorio;
-    private TIPO_RELATORIO tipoRelatorio;
-    private LocalDateTime dataGeracao;
+    private final String idRelatorio;
+    private final TIPO_RELATORIO tipoRelatorio;
+    private final LocalDateTime dataGeracao;
     private String dadosRelatorio;
 
     public void exibirRelatorio() {

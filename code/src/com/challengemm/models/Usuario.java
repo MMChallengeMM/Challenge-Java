@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class Usuario {
-    private String idUsuario;
+    private final String idUsuario;
     private String nome;
     private TURNO_USUARIO turnoUsuario;
 
@@ -53,10 +53,6 @@ public abstract class Usuario {
         return idUsuario;
     }
 
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -78,12 +74,12 @@ public abstract class Usuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(idUsuario, usuario.idUsuario) && Objects.equals(nome, usuario.nome) && turnoUsuario == usuario.turnoUsuario;
+        return Objects.equals(getIdUsuario(), usuario.getIdUsuario()) && Objects.equals(getNome(), usuario.getNome()) && getTurnoUsuario() == usuario.getTurnoUsuario();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsuario, nome, turnoUsuario);
+        return Objects.hash(getIdUsuario(), getNome(), getTurnoUsuario());
     }
 
     @Override

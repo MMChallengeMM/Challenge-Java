@@ -6,16 +6,13 @@ import java.util.Objects;
 
 public class Equipamento {
 
-    private String idEquipamento;
+    private final String idEquipamento;
     private String nomeEquipamento;
     private MecanismoDaFerrovia localizacaoEquipamento;
     private STATUS_EQUIPAMENTO statusEquipamento;
     private HistoricoFalhas historicoFalhas;
 
     //Métodos Gerais
-
-    public Equipamento() {
-    }
 
     public Equipamento(String nomeEquipamento, MecanismoDaFerrovia localizacaoEquipamento, STATUS_EQUIPAMENTO statusEquipamento) {
         this.idEquipamento = String.valueOf(Main.getTodosEquipamentos().size() + 1);

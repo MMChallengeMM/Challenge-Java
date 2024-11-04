@@ -8,10 +8,10 @@ import java.util.Objects;
 
 public class Falha {
 
-    private String idFalha;
+    private final String idFalha;
     private TIPO_FALHA tipoFalha;
     private String descricaoFalha;
-    private LocalDateTime dataRegitro;
+    private final LocalDateTime dataRegitro;
     private STATUS_FALHA statusFalha;
 
     public String exibirFalha() {
@@ -37,10 +37,6 @@ public class Falha {
         return idFalha;
     }
 
-    public void setIdFalha(String idFalha) {
-        this.idFalha = idFalha;
-    }
-
     public TIPO_FALHA getTipoFalha() {
         return tipoFalha;
     }
@@ -59,10 +55,6 @@ public class Falha {
 
     public LocalDateTime getDataRegitro() {
         return dataRegitro;
-    }
-
-    public void setDataRegitro(LocalDateTime dataRegitro) {
-        this.dataRegitro = dataRegitro;
     }
 
     public STATUS_FALHA getStatusFalha() {
