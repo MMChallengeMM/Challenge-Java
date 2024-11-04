@@ -1,5 +1,7 @@
 package com.challengemm.models;
 
+import com.challengemm.main.Main;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -95,28 +97,28 @@ public class Relatorio {
 
     // Métodos Gerais
 
-    public Relatorio() {
-    }
-
-    public Relatorio(String idRelatorio, HistoricoFalhas historicoFalhas) {
-        this.idRelatorio = idRelatorio;
+    public Relatorio(HistoricoFalhas historicoFalhas) {
+        this.idRelatorio = String.valueOf(Main.getTodosRelatorios().size() + 1);
         this.dataGeracao = LocalDateTime.now();
         this.tipoRelatorio = TIPO_RELATORIO.GERAL;
         this.dadosRelatorio = gerarDadosGeral(historicoFalhas);
+        Main.addRelatorioNoSistema(this);
     }
 
-    public Relatorio(String idRelatorio, HistoricoFalhas historicoFalhas, TIPO_FALHA tipoFalha) {
-        this.idRelatorio = idRelatorio;
+    public Relatorio(HistoricoFalhas historicoFalhas, TIPO_FALHA tipoFalha) {
+        this.idRelatorio = String.valueOf(Main.getTodosRelatorios().size() + 1);
         this.dataGeracao = LocalDateTime.now();
         this.tipoRelatorio = TIPO_RELATORIO.TIPO_DE_FALHA;
         this.dadosRelatorio = gerarDadosPorTipoFalha(historicoFalhas, tipoFalha);
+        Main.addRelatorioNoSistema(this);
     }
 
-    public Relatorio(String idRelatorio, HistoricoFalhas historicoFalhas, LocalDateTime dataInicial, LocalDateTime dataFinal) {
-        this.idRelatorio = idRelatorio;
+    public Relatorio(HistoricoFalhas historicoFalhas, LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        this.idRelatorio = String.valueOf(Main.getTodosRelatorios().size() + 1);
         this.dataGeracao = LocalDateTime.now();
         this.tipoRelatorio = TIPO_RELATORIO.PERIODO;
         this.dadosRelatorio = gerarDadosPorPeriodo(historicoFalhas, dataInicial, dataFinal);
+        Main.addRelatorioNoSistema(this);
     }
 
     public String getIdRelatorio() {

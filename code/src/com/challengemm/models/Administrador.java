@@ -10,11 +10,8 @@ public class Administrador extends Usuario{
         new Falha(tipoFalha, equipamento, descricao);
     }
 
-    public Administrador() {
-    }
-
-    public Administrador(String idUsuario, String nome, TURNO_USUARIO turnoUsuario, int nivelAcesso) {
-        super(idUsuario, nome, turnoUsuario);
+    public Administrador(String nome, TURNO_USUARIO turnoUsuario, int nivelAcesso) {
+        super(nome, turnoUsuario);
         this.nivelAcesso = nivelAcesso;
     }
 

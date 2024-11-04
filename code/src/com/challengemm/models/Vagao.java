@@ -12,13 +12,13 @@ public class Vagao extends MecanismoDaFerrovia{
     public Vagao() {
     }
 
-    public Vagao(String id, String nome, TIPO_VAGAO tipoVagao) {
-        super(id, nome);
+    public Vagao(String nome, TIPO_VAGAO tipoVagao) {
+        super(nome);
         this.tipoVagao = tipoVagao;
     }
 
-    public Vagao(String id, String nome, List<Equipamento> equipamentos, TIPO_VAGAO tipoVagao) {
-        super(id, nome, equipamentos);
+    public Vagao(String nome, List<Equipamento> equipamentos, TIPO_VAGAO tipoVagao) {
+        super(nome, equipamentos);
         this.tipoVagao = tipoVagao;
     }
 

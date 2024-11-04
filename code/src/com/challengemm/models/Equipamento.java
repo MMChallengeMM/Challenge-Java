@@ -1,5 +1,7 @@
 package com.challengemm.models;
 
+import com.challengemm.main.Main;
+
 import java.util.Objects;
 
 public class Equipamento {
@@ -15,13 +17,24 @@ public class Equipamento {
     public Equipamento() {
     }
 
-    public Equipamento(String idEquipamento, String nomeEquipamento, MecanismoDaFerrovia localizacaoEquipamento, STATUS_EQUIPAMENTO statusEquipamento, HistoricoFalhas historicoFalhas) {
-        this.idEquipamento = idEquipamento;
+    public Equipamento(String nomeEquipamento, MecanismoDaFerrovia localizacaoEquipamento, STATUS_EQUIPAMENTO statusEquipamento) {
+        this.idEquipamento = String.valueOf(Main.getTodosEquipamentos().size() + 1);
+        this.nomeEquipamento = nomeEquipamento;
+        this.localizacaoEquipamento = localizacaoEquipamento;
+        this.localizacaoEquipamento.addEquipamento(this);
+        this.statusEquipamento = statusEquipamento;
+        this.historicoFalhas = new HistoricoFalhas();
+        Main.addEquipamentoNoSistema(this);
+    }
+
+    public Equipamento(String nomeEquipamento, MecanismoDaFerrovia localizacaoEquipamento, STATUS_EQUIPAMENTO statusEquipamento, HistoricoFalhas historicoFalhas) {
+        this.idEquipamento = String.valueOf(Main.getTodosEquipamentos().size() + 1);
         this.nomeEquipamento = nomeEquipamento;
         this.localizacaoEquipamento = localizacaoEquipamento;
         this.localizacaoEquipamento.addEquipamento(this);
         this.statusEquipamento = statusEquipamento;
         this.historicoFalhas = historicoFalhas;
+        Main.addEquipamentoNoSistema(this);
     }
 
     public String getIdEquipamento() {

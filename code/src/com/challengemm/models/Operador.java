@@ -8,16 +8,13 @@ public class Operador extends Usuario{
     private String setorOperacao;
     private List<Manutencao> manutencoesResponsavel = new ArrayList<>();
 
-    public Operador() {
-    }
-
-    public Operador(String idUsuario, String nome, TURNO_USUARIO turnoUsuario, String setorOperacao) {
-        super(idUsuario, nome, turnoUsuario);
+    public Operador(String nome, TURNO_USUARIO turnoUsuario, String setorOperacao) {
+        super(nome, turnoUsuario);
         this.setorOperacao = setorOperacao;
     }
 
-    public Operador(String idUsuario, String nome, TURNO_USUARIO turnoUsuario, String setorOperacao, List<Manutencao> manutencoesResponsavel) {
-        super(idUsuario, nome, turnoUsuario);
+    public Operador(String nome, TURNO_USUARIO turnoUsuario, String setorOperacao, List<Manutencao> manutencoesResponsavel) {
+        super(nome, turnoUsuario);
         this.setorOperacao = setorOperacao;
         this.manutencoesResponsavel = manutencoesResponsavel;
     }

@@ -23,15 +23,6 @@ public class Falha {
                 descricaoFalha);
     }
 
-    public Falha(TIPO_FALHA tipoFalha, String descricaoFalha) {
-        this.idFalha = String.valueOf(Main.getTodasFalhas().size() + 1);
-        this.tipoFalha = tipoFalha;
-        this.descricaoFalha = descricaoFalha;
-        this.dataRegitro = LocalDateTime.now();
-        this.statusFalha = STATUS_FALHA.EM_ANALISE;
-        Main.addFalhaNoSistema(this);
-    }
-
     public Falha(TIPO_FALHA tipoFalha, Equipamento equipamento, String descricaoFalha) {
         this.idFalha = String.valueOf(Main.getTodasFalhas().size() + 1);
         this.tipoFalha = tipoFalha;

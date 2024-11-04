@@ -29,12 +29,12 @@ public class Linha extends MecanismoDaFerrovia {
     public Linha() {
     }
 
-    public Linha(String id, String nome) {
-        super(id, nome);
+    public Linha(String nome) {
+        super(nome);
     }
 
-    public Linha(String id, String nome, List<Equipamento> equipamentos, List<Estacao> estacoes) {
-        super(id, nome, equipamentos);
+    public Linha(String nome, List<Equipamento> equipamentos, List<Estacao> estacoes) {
+        super(nome, equipamentos);
         this.estacoes = estacoes;
     }
 

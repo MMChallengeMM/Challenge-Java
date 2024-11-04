@@ -1,5 +1,7 @@
 package com.challengemm.models;
 
+import com.challengemm.main.Main;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,23 +25,21 @@ public abstract class MecanismoDaFerrovia {
     public MecanismoDaFerrovia() {
     }
 
-    public MecanismoDaFerrovia(String id, String nome) {
-        this.id = id;
+    public MecanismoDaFerrovia(String nome) {
+        this.id = String.valueOf(Main.getTodosMecanismos().size() + 1);
         this.nome = nome;
+        Main.addMecanismoNoSistema(this);
     }
 
-    public MecanismoDaFerrovia(String id, String nome, List<Equipamento> equipamentos) {
-        this.id = id;
+    public MecanismoDaFerrovia(String nome, List<Equipamento> equipamentos) {
+        this.id = String.valueOf(Main.getTodosMecanismos().size() + 1);
         this.nome = nome;
         this.equipamentos = equipamentos;
+        Main.addMecanismoNoSistema(this);
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getNome() {

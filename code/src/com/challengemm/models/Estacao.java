@@ -27,16 +27,13 @@ public class Estacao extends MecanismoDaFerrovia {
 
     //Métodos gerais
 
-    public Estacao() {
-    }
-
-    public Estacao(String id, String nome, String enderecoEstacao) {
-        super(id, nome);
+    public Estacao(String nome, String enderecoEstacao) {
+        super(nome);
         this.enderecoEstacao = enderecoEstacao;
     }
 
-    public Estacao(String id, String nome, List<Equipamento> equipamentos, String enderecoEstacao, List<Linha> linhas) {
-        super(id, nome, equipamentos);
+    public Estacao(String nome, List<Equipamento> equipamentos, String enderecoEstacao, List<Linha> linhas) {
+        super(nome, equipamentos);
         this.enderecoEstacao = enderecoEstacao;
         this.linhas = linhas;
     }

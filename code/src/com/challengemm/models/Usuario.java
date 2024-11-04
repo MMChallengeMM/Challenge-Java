@@ -1,5 +1,7 @@
 package com.challengemm.models;
 
+import com.challengemm.main.Main;
+
 import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +17,7 @@ public abstract class Usuario {
         var scanner = new Scanner(System.in);
         switch (tipoRelatorio) {
             case GERAL:
-                new Relatorio("ID", historicoFalhas).exibirRelatorio();
+                new Relatorio(historicoFalhas).exibirRelatorio();
                 break;
             case PERIODO:
                 var formatadorData = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm");
@@ -26,27 +28,25 @@ public abstract class Usuario {
                 System.out.println("Digite a data final (dd/MM/yy):");
                 var dataFinal = LocalDateTime.parse(scanner.next() + " 23:59", formatadorData);
 
-                new Relatorio("ID", historicoFalhas, dataInicial, dataFinal).exibirRelatorio();
+                new Relatorio(historicoFalhas, dataInicial, dataFinal).exibirRelatorio();
                 break;
             case TIPO_DE_FALHA:
                 System.out.println("Digite o tipo de falha:");
                 var tipoFalha = TIPO_FALHA.valueOf(Normalizer.normalize(scanner.next().toUpperCase(), Normalizer.Form.NFD)
                         .replaceAll("\\p{M}", ""));
 
-                new Relatorio("ID", historicoFalhas, tipoFalha).exibirRelatorio();
+                new Relatorio(historicoFalhas, tipoFalha).exibirRelatorio();
                 break;
         }
     }
 
     //Métodos Gerais
 
-    public Usuario() {
-    }
-
-    public Usuario(String idUsuario, String nome, TURNO_USUARIO turnoUsuario) {
-        this.idUsuario = idUsuario;
+    public Usuario(String nome, TURNO_USUARIO turnoUsuario) {
+        this.idUsuario = String.valueOf(Main.getTodosUsuarios().size() + 1);
         this.nome = nome;
         this.turnoUsuario = turnoUsuario;
+        Main.addUsuarioNoSistema(this);
     }
 
     public String getIdUsuario() {

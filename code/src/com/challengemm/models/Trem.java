@@ -1,5 +1,7 @@
 package com.challengemm.models;
 
+import com.challengemm.main.Main;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,15 +23,14 @@ public class Trem {
 
 
     public Trem() {
+        this.idTrem = String.valueOf(Main.getTodosTrens().size() + 1);
+        Main.addTremNoSistema(this);
     }
 
-    public Trem(String idTrem) {
-        this.idTrem = idTrem;
-    }
-
-    public Trem(String idTrem, List<Vagao> vagoes) {
-        this.idTrem = idTrem;
+    public Trem(List<Vagao> vagoes) {
+        this.idTrem = String.valueOf(Main.getTodosTrens().size() + 1);
         this.vagoes = vagoes;
+        Main.addTremNoSistema(this);
     }
 
     public String getIdTrem() {

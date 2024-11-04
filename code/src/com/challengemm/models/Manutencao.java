@@ -1,5 +1,7 @@
 package com.challengemm.models;
 
+import com.challengemm.main.Main;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -32,8 +34,8 @@ public class Manutencao {
     public Manutencao() {
     }
 
-    public Manutencao(String idManutencao, LocalDateTime dataInicio, LocalDateTime dataFim, Falha falhaParaResolver, String descricaoManutencao) {
-        this.idManutencao = idManutencao;
+    public Manutencao(LocalDateTime dataInicio, LocalDateTime dataFim, Falha falhaParaResolver, String descricaoManutencao) {
+        this.idManutencao = String.valueOf(Main.getTodasManutencoes().size() + 1);
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
 
@@ -47,6 +49,7 @@ public class Manutencao {
 
         this.falhaParaResolver = falhaParaResolver;
         this.descricaoManutencao = descricaoManutencao;
+        Main.addManutencaoNoSistema(this);
     }
 
     public String getIdManutencao() {
