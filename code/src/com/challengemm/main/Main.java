@@ -12,7 +12,6 @@ public class Main {
     private static final List<Usuario> todosUsuarios = new ArrayList<>();
     private static final List<Relatorio> todosRelatorios = new ArrayList<>();
     private static final List<Equipamento> todosEquipamentos = new ArrayList<>();
-    private static final List<Manutencao> todasManutencoes = new ArrayList<>();
     private static final List<Trem> todosTrens = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -39,9 +38,6 @@ public class Main {
         adm1.criarNovaFalha(TIPO_FALHA.SOFTWARE,equip1 ,"e");
         adm1.criarNovaFalha(TIPO_FALHA.ELETRICA,equip1 ,"f");
         adm1.criarNovaFalha(TIPO_FALHA.SOFTWARE,equip1 ,"g");
-
-        new Manutencao(LocalDateTime.now().minusDays(4), LocalDateTime.now().minusDays(2),equip1.getHistoricoFalhas().getFalhas().getLast(),"Era um parafuso que faltava")
-                .exibirManutencao();
 
         operador1.gerarNovoRelatorio(TIPO_RELATORIO.GERAL,equip1.getHistoricoFalhas());
 
@@ -107,18 +103,6 @@ public class Main {
 
     public static void removeEquipamentoNoSistema(Equipamento equipamento) {
         todosEquipamentos.remove(equipamento);
-    }
-
-    public static List<Manutencao> getTodasManutencoes() {
-        return new ArrayList<>(todasManutencoes);
-    }
-
-    public static void addManutencaoNoSistema(Manutencao manutencao) {
-        todasManutencoes.add(manutencao);
-    }
-
-    public static void removeManutencaoNoSistema(Manutencao manutencao) {
-        todasManutencoes.remove(manutencao);
     }
 
     public static List<Trem> getTodosTrens() {
