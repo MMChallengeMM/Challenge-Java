@@ -1,5 +1,7 @@
 package marmota_mobilidade.services;
 
+import marmota_mobilidade.models.FAILURE_TYPE;
+import marmota_mobilidade.models.Failure;
 import marmota_mobilidade.models.Operator;
 import marmota_mobilidade.repositories.FailureRepo;
 import marmota_mobilidade.repositories.ReportRepo;
@@ -20,15 +22,17 @@ public class Menu {
                     2. Listar falhas
                     3. Criar operador
                     4. Listar usuários
-                    5. Sair
+                    0. Sair
                     """);
             var scan = new Scanner(System.in);
             var opcao = scan.nextInt();
 
             switch (opcao) {
                 case 1:
+                    createFailureOnRepo(failureRepo);
                     break;
                 case 2:
+                    System.out.println(failureRepo.get());
                     break;
                 case 3:
                     createOperatorOnRepo(userRepo);
@@ -36,7 +40,7 @@ public class Menu {
                 case 4:
                     System.out.println(userRepo.get());
                     break;
-                case 5:
+                case 0:
                     System.out.println("Saindo...");
                     break;
 
@@ -44,7 +48,7 @@ public class Menu {
                     System.out.println("Opção Inválida");
             }
 
-            if (opcao == 5) {
+            if (opcao == 0) {
                 break;
             }
         }
@@ -52,10 +56,13 @@ public class Menu {
 
     public static void createOperatorOnRepo(UserRepo repo) {
         var scan = new Scanner(System.in);
+
         System.out.println("Digite o id:");
         var id = scan.nextLine();
+
         System.out.println("Digite o nome:");
         var name = scan.nextLine();
+
         repo.add(
                 Operator.builder()
                         .id(id)
@@ -65,14 +72,34 @@ public class Menu {
 
     public static void createFailureOnRepo(FailureRepo repo) {
         var scan = new Scanner(System.in);
-        System.out.println("Digite o id:");
-        var id = scan.nextLine();
-        System.out.println("""
-                1. Mecânica
-                2. Elétrica
-                3. Software
-                4. Outro
-                """);
+
+        try {
+            System.out.println("Digite o id:");
+            var id = scan.nextLine();
+
+            System.out.println("""
+                    1. Mecânica
+                    2. Elétrica
+                    3. Software
+                    4. Outro
+                    """);
+            var failType = FAILURE_TYPE.fromNumber(scan.nextInt());
+            scan.nextLine();
+
+            System.out.println("Descreva a falha:");
+            var description = scan.nextLine();
+
+            repo.add(
+                    Failure.builder()
+                            .id(id)
+                            .failureType(failType)
+                            .failureDescription(description)
+                            .build()
+            );
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Opção Inválida");
+        }
 
     }
 }
