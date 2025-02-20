@@ -13,47 +13,7 @@ import java.util.Scanner;
 public class Menu {
     private final UserRepo userRepo = new UserRepo();
     private final FailureRepo failureRepo = new FailureRepo();
-    private final marmota_mobilidade.repositories.ReportRepo ReportRepo = new ReportRepo();
-
-    public void iniciar() {
-        System.out.println("Bem vindo ao Marmota Mobilidade");
-        while (true) {
-            System.out.println("""
-                    1. Criar falha
-                    2. Listar falhas
-                    3. Criar operador
-                    4. Listar usuários
-                    0. Sair
-                    """);
-            var scan = new Scanner(System.in);
-            var opcao = scan.nextInt();
-
-            switch (opcao) {
-                case 1:
-                    createFailureOnRepo(failureRepo);
-                    break;
-                case 2:
-                    System.out.println(failureRepo.get());
-                    break;
-                case 3:
-                    createUserOnRepo(userRepo);
-                    break;
-                case 4:
-                    System.out.println(userRepo.get());
-                    break;
-                case 0:
-                    System.out.println("Saindo...");
-                    break;
-
-                default:
-                    System.out.println("Opção Inválida");
-            }
-
-            if (opcao == 0) {
-                break;
-            }
-        }
-    }
+    private final ReportRepo ReportRepo = new ReportRepo();
 
     public static void createUserOnRepo(UserRepo repo) {
         var scan = new Scanner(System.in);
@@ -122,5 +82,45 @@ public class Menu {
             System.out.println("Opção Inválida");
         }
 
+    }
+
+    public void iniciar() {
+        System.out.println("Bem vindo ao Marmota Mobilidade");
+        while (true) {
+            System.out.println("""
+                    1. Criar falha
+                    2. Listar falhas
+                    3. Criar operador
+                    4. Listar usuários
+                    0. Sair
+                    """);
+            var scan = new Scanner(System.in);
+            var opcao = scan.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    createFailureOnRepo(failureRepo);
+                    break;
+                case 2:
+                    System.out.println(failureRepo.get());
+                    break;
+                case 3:
+                    createUserOnRepo(userRepo);
+                    break;
+                case 4:
+                    System.out.println(userRepo.get());
+                    break;
+                case 0:
+                    System.out.println("Saindo...");
+                    break;
+
+                default:
+                    System.out.println("Opção Inválida");
+            }
+
+            if (opcao == 0) {
+                break;
+            }
+        }
     }
 }

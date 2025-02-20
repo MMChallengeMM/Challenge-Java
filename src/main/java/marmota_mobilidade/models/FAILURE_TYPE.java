@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum FAILURE_TYPE {
-    MECANICA (1),
-    ELETRICA (2),
-    SOFTWARE (3),
-    OUTRO (4);
+    MECANICA(1),
+    ELETRICA(2),
+    SOFTWARE(3),
+    OUTRO(4);
 
     private final int num;
 
@@ -15,7 +15,7 @@ public enum FAILURE_TYPE {
         this.num = num;
     }
 
-    public static FAILURE_TYPE fromNumber(int num){
+    public static FAILURE_TYPE fromNumber(int num) {
         for (FAILURE_TYPE tipo : FAILURE_TYPE.values()) {
             if (tipo.getNum() == num) {
                 return tipo;

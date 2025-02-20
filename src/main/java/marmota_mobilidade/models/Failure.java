@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Failure extends _BaseEntity {
+    private final LocalDateTime registrationDate = LocalDateTime.now();
     @NonNull
     private FAILURE_TYPE failureType;
     @NonNull
     private String failureDescription;
-    private final LocalDateTime registrationDate = LocalDateTime.now();
     private FAILURE_STATUS failureStatus = FAILURE_STATUS.PENDENTE;
 
 }
