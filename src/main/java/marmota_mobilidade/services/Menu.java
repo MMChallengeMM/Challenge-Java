@@ -1,5 +1,6 @@
 package marmota_mobilidade.services;
 
+import marmota_mobilidade.models.Admin;
 import marmota_mobilidade.models.FAILURE_TYPE;
 import marmota_mobilidade.models.Failure;
 import marmota_mobilidade.models.Operator;
@@ -35,7 +36,7 @@ public class Menu {
                     System.out.println(failureRepo.get());
                     break;
                 case 3:
-                    createOperatorOnRepo(userRepo);
+                    createUserOnRepo(userRepo);
                     break;
                 case 4:
                     System.out.println(userRepo.get());
@@ -54,7 +55,7 @@ public class Menu {
         }
     }
 
-    public static void createOperatorOnRepo(UserRepo repo) {
+    public static void createUserOnRepo(UserRepo repo) {
         var scan = new Scanner(System.in);
 
         System.out.println("Digite o id:");
@@ -63,11 +64,31 @@ public class Menu {
         System.out.println("Digite o nome:");
         var name = scan.nextLine();
 
-        repo.add(
-                Operator.builder()
-                        .id(id)
-                        .name(name)
-                        .build());
+        System.out.println("""
+                1. Operador
+                2. Adm
+                """);
+        var opcao = scan.nextInt();
+
+        switch (opcao) {
+            case 1:
+                repo.add(
+                        Operator.builder()
+                                .id(id)
+                                .name(name)
+                                .build());
+                break;
+            case 2:
+                repo.add(
+                        Admin.builder()
+                                .id(id)
+                                .name(name)
+                                .build());
+            default:
+                System.out.println("Opção Inválida");
+        }
+
+
     }
 
     public static void createFailureOnRepo(FailureRepo repo) {
