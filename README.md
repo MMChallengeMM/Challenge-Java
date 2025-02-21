@@ -2,8 +2,6 @@
 
 `` Challenge FIAP X CCR ``
 
----
-
 ## Integrantes 
 - João Vinicius Alves (559560)
 - Juan Pablo (560445)
