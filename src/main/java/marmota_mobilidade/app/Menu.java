@@ -1,4 +1,4 @@
-package marmota_mobilidade.services;
+package marmota_mobilidade.app;
 
 import marmota_mobilidade.models.*;
 import marmota_mobilidade.repositories.FailureRepo;
