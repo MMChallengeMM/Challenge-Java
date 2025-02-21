@@ -1,9 +1,6 @@
 package marmota_mobilidade.services;
 
-import marmota_mobilidade.models.Admin;
-import marmota_mobilidade.models.FAILURE_TYPE;
-import marmota_mobilidade.models.Failure;
-import marmota_mobilidade.models.Operator;
+import marmota_mobilidade.models.*;
 import marmota_mobilidade.repositories.FailureRepo;
 import marmota_mobilidade.repositories.ReportRepo;
 import marmota_mobilidade.repositories.UserRepo;
@@ -12,8 +9,38 @@ import java.util.Scanner;
 
 public class Menu {
     private final UserRepo userRepo = new UserRepo();
-    private final FailureRepo failureRepo = new FailureRepo();
-    private final ReportRepo ReportRepo = new ReportRepo();
+    private static final FailureRepo failureRepo = new FailureRepo();
+    private final ReportRepo reportRepo = new ReportRepo();
+
+    public static void createReportOnRepo(ReportRepo repo) {
+        var scan = new Scanner(System.in);
+
+        try {
+            System.out.println("Digite o id:");
+            var id = scan.nextLine();
+
+            System.out.println("""
+                    1. Geral
+                    2. Período
+                    3. Tipo de falha
+                    """);
+            var reportType = REPORT_TYPE.fromNumber(scan.nextInt());
+            scan.nextLine();
+
+            var reportIncomplete = Report.builder()
+                    .id(id)
+                    .reportType(reportType)
+                    .build();
+
+            var fullReport = reportIncomplete.generateData(failureRepo);
+            failureRepo.get().forEach(f -> f.setOnGeneralReport(true));
+
+            repo.add(fullReport);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Opção Inválida");
+        }
+    }
 
     public static void createUserOnRepo(UserRepo repo) {
         var scan = new Scanner(System.in);
@@ -84,14 +111,16 @@ public class Menu {
 
     }
 
-    public void iniciar() {
-        System.out.println("Bem vindo ao Marmota Mobilidade");
+    public void start() {
+        System.out.println("Bem vindo ao Marmota Mobilidade - Operador");
         while (true) {
             System.out.println("""
                     1. Criar falha
                     2. Listar falhas
                     3. Criar operador
                     4. Listar usuários
+                    5. Criar relatório
+                    6. Listar relatórios
                     0. Sair
                     """);
             var scan = new Scanner(System.in);
@@ -109,6 +138,12 @@ public class Menu {
                     break;
                 case 4:
                     System.out.println(userRepo.get());
+                    break;
+                case 5:
+                    createReportOnRepo(reportRepo);
+                    break;
+                case 6:
+                    System.out.println(reportRepo.get());
                     break;
                 case 0:
                     System.out.println("Saindo...");

@@ -17,5 +17,6 @@ public class Failure extends _BaseEntity {
     @NonNull
     private String failureDescription;
     private FAILURE_STATUS failureStatus = FAILURE_STATUS.PENDENTE;
+    private boolean onGeneralReport = false;
 
 }
