@@ -1,0 +1,28 @@
+2025-02-24 11:37:44 [main] INFO  marmota_mobilidade.app.Menu - Iniciando sistema... 
+2025-02-24 11:43:46 [main] INFO  marmota_mobilidade.app.Menu - Iniciando sistema... 
+2025-02-24 11:43:49 [main] ERROR marmota_mobilidade.app.Menu - Erro na seleção 
+java.util.InputMismatchException: null
+	at java.base/java.util.Scanner.throwFor(Scanner.java:964) ~[?:?]
+	at java.base/java.util.Scanner.next(Scanner.java:1619) ~[?:?]
+	at java.base/java.util.Scanner.nextInt(Scanner.java:2284) ~[?:?]
+	at java.base/java.util.Scanner.nextInt(Scanner.java:2238) ~[?:?]
+	at marmota_mobilidade.app.Menu.start(Menu.java:133) [classes/:?]
+	at marmota_mobilidade.Main.main(Main.java:7) [classes/:?]
+2025-02-24 11:46:41 [main] INFO  marmota_mobilidade.app.Menu - Iniciando sistema... 
+2025-02-24 11:46:42 [main] ERROR marmota_mobilidade.app.Menu - Erro na seleção 
+java.util.InputMismatchException: null
+	at java.base/java.util.Scanner.throwFor(Scanner.java:964) ~[?:?]
+	at java.base/java.util.Scanner.next(Scanner.java:1619) ~[?:?]
+	at java.base/java.util.Scanner.nextInt(Scanner.java:2284) ~[?:?]
+	at java.base/java.util.Scanner.nextInt(Scanner.java:2238) ~[?:?]
+	at marmota_mobilidade.app.Menu.start(Menu.java:116) [classes/:?]
+	at marmota_mobilidade.Main.main(Main.java:7) [classes/:?]
+2025-02-24 11:47:34 [main] ERROR marmota_mobilidade.app.Menu - Erro na seleção 
+java.util.InputMismatchException: null
+	at java.base/java.util.Scanner.throwFor(Scanner.java:964) ~[?:?]
+	at java.base/java.util.Scanner.next(Scanner.java:1619) ~[?:?]
+	at java.base/java.util.Scanner.nextInt(Scanner.java:2284) ~[?:?]
+	at java.base/java.util.Scanner.nextInt(Scanner.java:2238) ~[?:?]
+	at marmota_mobilidade.app.Menu.start(Menu.java:116) [classes/:?]
+	at marmota_mobilidade.Main.main(Main.java:7) [classes/:?]
+2025-02-24 11:47:54 [main] INFO  marmota_mobilidade.app.Menu - Finalizando sistema... 

@@ -4,13 +4,17 @@ import marmota_mobilidade.models.*;
 import marmota_mobilidade.repositories.FailureRepo;
 import marmota_mobilidade.repositories.ReportRepo;
 import marmota_mobilidade.repositories.UserRepo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
     private final UserRepo userRepo = new UserRepo();
     private static final FailureRepo failureRepo = new FailureRepo();
     private final ReportRepo reportRepo = new ReportRepo();
+    private static final Logger LOGGER = LogManager.getLogger(Menu.class);
 
     public static void createReportOnRepo(ReportRepo repo) {
         var scan = new Scanner(System.in);
@@ -27,10 +31,7 @@ public class Menu {
             var reportType = REPORT_TYPE.fromNumber(scan.nextInt());
             scan.nextLine();
 
-            var reportIncomplete = Report.builder()
-                    .id(id)
-                    .reportType(reportType)
-                    .build();
+            var reportIncomplete = Report.builder().id(id).reportType(reportType).build();
 
             var fullReport = reportIncomplete.generateData(failureRepo);
             failureRepo.get().forEach(f -> f.setOnGeneralReport(true));
@@ -59,18 +60,10 @@ public class Menu {
 
         switch (opcao) {
             case 1:
-                repo.add(
-                        Operator.builder()
-                                .id(id)
-                                .name(name)
-                                .build());
+                repo.add(Operator.builder().id(id).name(name).build());
                 break;
             case 2:
-                repo.add(
-                        Admin.builder()
-                                .id(id)
-                                .name(name)
-                                .build());
+                repo.add(Admin.builder().id(id).name(name).build());
             default:
                 System.out.println("Opção Inválida");
         }
@@ -82,8 +75,8 @@ public class Menu {
         var scan = new Scanner(System.in);
 
         try {
-            System.out.println("Digite o id:");
-            var id = scan.nextLine();
+            LOGGER.info("Iniciando criação de falha");
+            var id = String.valueOf(repo.get().size() + 1);
 
             System.out.println("""
                     1. Mecânica
@@ -97,13 +90,11 @@ public class Menu {
             System.out.println("Descreva a falha:");
             var description = scan.nextLine();
 
-            repo.add(
-                    Failure.builder()
-                            .id(id)
-                            .failureType(failType)
-                            .failureDescription(description)
-                            .build()
-            );
+            repo.add(Failure.builder()
+                    .id(id)
+                    .failureType(failType)
+                    .failureDescription(description)
+                    .build());
 
         } catch (IllegalArgumentException e) {
             System.out.println("Opção Inválida");
@@ -112,49 +103,56 @@ public class Menu {
     }
 
     public void start() {
+        LOGGER.info("Iniciando sistema...");
         System.out.println("Bem vindo ao Marmota Mobilidade - Operador");
         while (true) {
-            System.out.println("""
-                    1. Criar falha
-                    2. Listar falhas
-                    3. Criar operador
-                    4. Listar usuários
-                    5. Criar relatório
-                    6. Listar relatórios
-                    0. Sair
-                    """);
-            var scan = new Scanner(System.in);
-            var opcao = scan.nextInt();
+            try {
+                System.out.println("""
+                        1. Criar falha
+                        2. Listar falhas
+                        3. Criar operador
+                        4. Listar usuários
+                        5. Criar relatório
+                        6. Listar relatórios
+                        0. Sair
+                        """);
+                var scan = new Scanner(System.in);
+                var opcao = scan.nextInt();
 
-            switch (opcao) {
-                case 1:
-                    createFailureOnRepo(failureRepo);
-                    break;
-                case 2:
-                    System.out.println(failureRepo.get());
-                    break;
-                case 3:
-                    createUserOnRepo(userRepo);
-                    break;
-                case 4:
-                    System.out.println(userRepo.get());
-                    break;
-                case 5:
-                    createReportOnRepo(reportRepo);
-                    break;
-                case 6:
-                    System.out.println(reportRepo.get());
-                    break;
-                case 0:
-                    System.out.println("Saindo...");
-                    break;
+                switch (opcao) {
+                    case 1:
+                        createFailureOnRepo(failureRepo);
+                        break;
+                    case 2:
+                        System.out.println(failureRepo.get());
+                        break;
+                    case 3:
+                        createUserOnRepo(userRepo);
+                        break;
+                    case 4:
+                        System.out.println(userRepo.get());
+                        break;
+                    case 5:
+                        createReportOnRepo(reportRepo);
+                        break;
+                    case 6:
+                        System.out.println(reportRepo.get());
+                        break;
+                    case 0:
+                        System.out.println("Saindo...");
+                        break;
 
-                default:
-                    System.out.println("Opção Inválida");
-            }
+                    default:
+                        System.out.println("Opção Inválida");
 
-            if (opcao == 0) {
-                break;
+                }
+
+                if (opcao == 0) {
+                    LOGGER.info("Finalizando sistema...");
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                LOGGER.error("Erro na seleção", e);
             }
         }
     }
