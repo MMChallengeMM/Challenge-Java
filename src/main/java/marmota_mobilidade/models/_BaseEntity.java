@@ -1,9 +1,6 @@
 package marmota_mobilidade.models;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -13,5 +10,10 @@ import lombok.experimental.SuperBuilder;
 public abstract class _BaseEntity {
     @NonNull
     private String id;
+    @Builder.Default
     private boolean deleted = false;
+
+    public String show_details(){
+        return "";
+    }
 }

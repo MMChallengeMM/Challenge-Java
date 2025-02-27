@@ -13,4 +13,9 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Admin extends User {
     private int accessLevel;
+
+    @Override
+    public String show_details() {
+        return "Administrador #%s - %s | Turno: %s - Acesso: %s ".formatted(this.getId(), this.getName(), this.getUserShift(),this.getAccessLevel());
+    }
 }

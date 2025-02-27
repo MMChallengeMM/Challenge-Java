@@ -20,8 +20,7 @@ public class Menu {
         var scan = new Scanner(System.in);
 
         try {
-            System.out.println("Digite o id:");
-            var id = scan.nextLine();
+            var id = String.valueOf(repo.get().size());
 
             System.out.println("""
                     1. Geral
@@ -38,7 +37,8 @@ public class Menu {
 
             repo.add(fullReport);
 
-        } catch (IllegalArgumentException e) {
+        } catch (InputMismatchException e) {
+            LOGGER.error("Erro na seleção", e);
             System.out.println("Opção Inválida");
         }
     }
@@ -46,29 +46,32 @@ public class Menu {
     public static void createUserOnRepo(UserRepo repo) {
         var scan = new Scanner(System.in);
 
-        System.out.println("Digite o id:");
-        var id = scan.nextLine();
+        try {
+            var id = String.valueOf(repo.get().size());
 
-        System.out.println("Digite o nome:");
-        var name = scan.nextLine();
+            System.out.println("Digite o nome:");
+            var name = scan.nextLine();
 
-        System.out.println("""
-                1. Operador
-                2. Adm
-                """);
-        var opcao = scan.nextInt();
+            System.out.println("""
+                    1. Operador
+                    2. Adm
+                    """);
+            var opcao = scan.nextInt();
 
-        switch (opcao) {
-            case 1:
-                repo.add(Operator.builder().id(id).name(name).build());
-                break;
-            case 2:
-                repo.add(Admin.builder().id(id).name(name).build());
-            default:
-                System.out.println("Opção Inválida");
+            switch (opcao) {
+                case 1:
+                    repo.add(Operator.builder().id(id).name(name).build());
+                    break;
+                case 2:
+                    repo.add(Admin.builder().id(id).name(name).build());
+                    break;
+                default:
+                    System.out.println("Opção Inválida");
+            }
+        } catch (InputMismatchException e) {
+            LOGGER.error("Erro na seleção", e);
+            System.out.println("Opção Inválida");
         }
-
-
     }
 
     public static void createFailureOnRepo(FailureRepo repo) {
@@ -96,7 +99,8 @@ public class Menu {
                     .failureDescription(description)
                     .build());
 
-        } catch (IllegalArgumentException e) {
+        } catch (InputMismatchException e) {
+            LOGGER.error("Erro na seleção", e);
             System.out.println("Opção Inválida");
         }
 
@@ -124,19 +128,22 @@ public class Menu {
                         createFailureOnRepo(failureRepo);
                         break;
                     case 2:
-                        System.out.println(failureRepo.get());
+                        failureRepo.get().forEach(f -> System.out.println(f.show_details()));
                         break;
                     case 3:
                         createUserOnRepo(userRepo);
                         break;
                     case 4:
-                        System.out.println(userRepo.get());
+                        userRepo.get().forEach(u -> System.out.println(u.show_details()));
                         break;
                     case 5:
                         createReportOnRepo(reportRepo);
                         break;
                     case 6:
-                        System.out.println(reportRepo.get());
+                        reportRepo.get().forEach(r -> System.out.println(r.show_details()));
+                        break;
+                    case 7:
+                        System.out.println(failureRepo.get());
                         break;
                     case 0:
                         System.out.println("Saindo...");
@@ -153,6 +160,7 @@ public class Menu {
                 }
             } catch (InputMismatchException e) {
                 LOGGER.error("Erro na seleção", e);
+                System.out.println("Opção Inválida");
             }
         }
     }

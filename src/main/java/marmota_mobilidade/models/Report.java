@@ -22,7 +22,7 @@ public class Report extends _BaseEntity {
     private LocalDateTime generationDate;
     private int numberOfFailures;
     private String reportData;
-    private Failure[] lastFailures = new Failure[5];
+    private String[] lastFailures = new String[5];
 
     public Report generateData(FailureRepo repo) {
         var failures = repo.get();
@@ -49,7 +49,8 @@ public class Report extends _BaseEntity {
                 this.lastFailures = generalFailures.stream()
                         .sorted(Comparator.comparing(Failure::getRegistrationDate).reversed())
                         .limit(5)
-                        .toArray(Failure[]::new);
+                        .map(Failure::show_details)
+                        .toArray(String[]::new);
                 break;
             case PERIODO:
                 var scan1 = new Scanner(System.in);
@@ -71,7 +72,8 @@ public class Report extends _BaseEntity {
                 this.lastFailures = filteredFailures1.stream()
                         .sorted(Comparator.comparing(Failure::getRegistrationDate).reversed())
                         .limit(5)
-                        .toArray(Failure[]::new);
+                        .map(Failure::show_details)
+                        .toArray(String[]::new);
                 break;
             case TIPO_DE_FALHA:
                 var scan2 = new Scanner(System.in);
@@ -96,11 +98,16 @@ public class Report extends _BaseEntity {
                 this.lastFailures = filteredFailures2.stream()
                         .sorted(Comparator.comparing(Failure::getRegistrationDate).reversed())
                         .limit(5)
-                        .toArray(Failure[]::new);
+                        .map(Failure::show_details)
+                        .toArray(String[]::new);
                 break;
 
         }
         return this;
     }
 
+    @Override
+    public String show_details() {
+        return "Relatório #%s - %s | (%s) - (%s) | N° de falhas: %s - %s".formatted(this.getId(), this.getReportType(), this.getGenerationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")),this.getReportData(), this.getNumberOfFailures(), this.getLastFailures());
+    }
 }

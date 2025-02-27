@@ -13,4 +13,9 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Operator extends User {
     private String sector;
+
+    @Override
+    public String show_details() {
+        return "Operador #%s - %s | Turno: %s - Setor: %s ".formatted(this.getId(), this.getName(), this.getUserShift(),this.getSector());
+    }
 }
