@@ -12,11 +12,11 @@ import java.util.Scanner;
 
 public class Menu {
     private final UserRepo userRepo = new UserRepo();
-    private static final FailureRepo failureRepo = new FailureRepo();
+    private final FailureRepo failureRepo = new FailureRepo();
     private final ReportRepo reportRepo = new ReportRepo();
     private static final Logger LOGGER = LogManager.getLogger(Menu.class);
 
-    public static void createReportOnRepo(ReportRepo repo) {
+    private void createReportOnRepo(ReportRepo repo) {
         var scan = new Scanner(System.in);
 
         try {
@@ -43,7 +43,7 @@ public class Menu {
         }
     }
 
-    public static void createUserOnRepo(UserRepo repo) {
+    private void createUserOnRepo(UserRepo repo) {
         var scan = new Scanner(System.in);
 
         try {
@@ -74,7 +74,7 @@ public class Menu {
         }
     }
 
-    public static void createFailureOnRepo(FailureRepo repo) {
+    private void createFailureOnRepo(FailureRepo repo) {
         var scan = new Scanner(System.in);
 
         try {
@@ -106,24 +106,69 @@ public class Menu {
 
     }
 
-    public void start() {
-        LOGGER.info("Iniciando sistema...");
-        System.out.println("Bem vindo ao Marmota Mobilidade - Operador");
+    private int start() {
+        var scan = new Scanner(System.in);
+        var opcao = -1;
+
+        while (true) {
+            try {
+                System.out.println("""
+                        1. Criar falha
+                        2. Listar falhas
+                        3. Criar relatorios
+                        4. Lista relatorios
+                        5. Voltar para o login
+                        0. Sair
+                        """);
+                opcao = scan.nextInt();
+
+                switch (opcao) {
+                    case 0:
+                        return 0;
+                    case 1:
+                        createFailureOnRepo(failureRepo);
+                        break;
+                    case 2:
+                        failureRepo.get().forEach(f -> System.out.println(f.show_details()));
+                        break;
+                    case 3:
+                        createReportOnRepo(reportRepo);
+                        break;
+                    case 4:
+                        reportRepo.get().forEach(r -> System.out.println(r.show_details()));
+                        break;
+                    case 5:
+                        return -1;
+                    default:
+                        System.out.println("Opção inválida");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor Inválido");
+            }
+        }
+    }
+
+    private int startAdm() {
+        var scan = new Scanner(System.in);
+        var opcao = -1;
+
         while (true) {
             try {
                 System.out.println("""
                         1. Criar falha
                         2. Listar falhas
                         3. Criar operador
-                        4. Listar usuários
-                        5. Criar relatório
-                        6. Listar relatórios
+                        4. Listar operadores
+                        5. Criar relatorios
+                        6. Lista relatorios
+                        7. Voltar para o login
                         0. Sair
                         """);
-                var scan = new Scanner(System.in);
-                var opcao = scan.nextInt();
+                opcao = scan.nextInt();
 
                 switch (opcao) {
+                    case 0:
+                        return 0;
                     case 1:
                         createFailureOnRepo(failureRepo);
                         break;
@@ -143,25 +188,51 @@ public class Menu {
                         reportRepo.get().forEach(r -> System.out.println(r.show_details()));
                         break;
                     case 7:
-                        System.out.println(failureRepo.get());
+                        return -1;
+                    default:
+                        System.out.println("Opção inválida");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor Inválido");
+            }
+        }
+    }
+
+    public void loginStart() {
+        var scan = new Scanner(System.in);
+        var opcao = -1;
+
+        System.out.println("Bem vindo ao sistema");
+        try {
+            while (true) {
+                if (opcao == 0) {
+                    System.out.println("Saindo...");
+                    break;
+                }
+                System.out.println("""
+                        Escolha um:
+                        1. Operador
+                        2. Administrador
+                        0. Sair
+                        """);
+                opcao = scan.nextInt();
+
+                switch (opcao) {
+                    case 1:
+                        opcao = start();
+                        break;
+                    case 2:
+                        opcao = startAdm();
                         break;
                     case 0:
                         System.out.println("Saindo...");
-                        break;
-
+                        return;
                     default:
-                        System.out.println("Opção Inválida");
-
+                        System.out.println("Opção inválida");
                 }
-
-                if (opcao == 0) {
-                    LOGGER.info("Finalizando sistema...");
-                    break;
-                }
-            } catch (InputMismatchException e) {
-                LOGGER.error("Erro na seleção", e);
-                System.out.println("Opção Inválida");
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Valor Inválido");
         }
     }
 }
