@@ -20,26 +20,31 @@ public class Menu {
         var scan = new Scanner(System.in);
 
         try {
-            var id = String.valueOf(repo.get().size());
+            LOGGER.info("Iniciando criação de relatorio.");
 
-            System.out.println("""
-                    1. Geral
-                    2. Período
-                    3. Tipo de falha
-                    """);
+            var id = String.valueOf(repo.getAll().size() + 1);
+            LOGGER.debug("Id #{} criado com sucessor.", id);
+
+            Screen.reportTypes();
             var reportType = REPORT_TYPE.fromNumber(scan.nextInt());
             scan.nextLine();
+            LOGGER.debug("Tipo de relatório criado com sucesso: {}", reportType);
 
             var reportIncomplete = Report.builder().id(id).reportType(reportType).build();
+            LOGGER.debug("Relaório #{} iniciado.", id);
 
             var fullReport = reportIncomplete.generateData(failureRepo);
             failureRepo.get().forEach(f -> f.setOnGeneralReport(true));
 
             repo.add(fullReport);
+            LOGGER.info("Relatório #{} criado com sucesso.", id);
 
         } catch (InputMismatchException e) {
-            LOGGER.error("Erro na seleção", e);
-            System.out.println("Opção Inválida");
+            LOGGER.error("Erro na seleção de tipo de relatório: {}", e.getMessage(), e);
+            System.out.println("Valor Inválido");
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Número fora das opções: {}", e.getMessage(), e);
+            System.out.println("Opção inválida");
         }
     }
 
@@ -47,15 +52,12 @@ public class Menu {
         var scan = new Scanner(System.in);
 
         try {
-            var id = String.valueOf(repo.get().size());
+            var id = String.valueOf(repo.getAll().size() + 1);
 
-            System.out.println("Digite o nome:");
+            System.out.println("\nDigite o nome do usuário:");
             var name = scan.nextLine();
 
-            System.out.println("""
-                    1. Operador
-                    2. Adm
-                    """);
+            Screen.userTypes();
             var opcao = scan.nextInt();
 
             switch (opcao) {
@@ -79,16 +81,14 @@ public class Menu {
 
         try {
             LOGGER.info("Iniciando criação de falha");
-            var id = String.valueOf(repo.get().size() + 1);
 
-            System.out.println("""
-                    1. Mecânica
-                    2. Elétrica
-                    3. Software
-                    4. Outro
-                    """);
+            var id = String.valueOf(repo.getAll().size() + 1);
+            LOGGER.debug("Id #{} criado com sucesso", id);
+
+            Screen.failureTypes();
             var failType = FAILURE_TYPE.fromNumber(scan.nextInt());
             scan.nextLine();
+            LOGGER.debug("Tipo de falha criada com sucesso: {}", failType);
 
             System.out.println("Descreva a falha:");
             var description = scan.nextLine();
@@ -98,28 +98,26 @@ public class Menu {
                     .failureType(failType)
                     .failureDescription(description)
                     .build());
+            LOGGER.info("Falha #{} criada com sucesso.", id);
+            System.out.printf("Falha #%s adicionada ao sistema.%n", id);
 
         } catch (InputMismatchException e) {
-            LOGGER.error("Erro na seleção", e);
-            System.out.println("Opção Inválida");
+            LOGGER.error("Erro na seleção de tipo de falha: {}", e.getMessage(), e);
+            System.out.println("Valor Inválido");
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Número fora das opções: {}", e.getMessage(), e);
+            System.out.println("Opção inválida");
         }
-
     }
 
     private int start() {
         var scan = new Scanner(System.in);
         var opcao = -1;
+        LOGGER.info("Iniciando sistema como operador.");
 
         while (true) {
             try {
-                System.out.println("""
-                        1. Criar falha
-                        2. Listar falhas
-                        3. Criar relatorios
-                        4. Lista relatorios
-                        5. Voltar para o login
-                        0. Sair
-                        """);
+                Screen.system();
                 opcao = scan.nextInt();
 
                 switch (opcao) {
@@ -129,13 +127,23 @@ public class Menu {
                         createFailureOnRepo(failureRepo);
                         break;
                     case 2:
+                        if (failureRepo.get().isEmpty()) {
+                            System.out.println("\nNão há falhas");
+                            break;
+                        }
+                        System.out.println("\n#ID | TIPO | DATA | STATUS | DESCRIÇÃO");
                         failureRepo.get().forEach(f -> System.out.println(f.show_details()));
                         break;
                     case 3:
                         createReportOnRepo(reportRepo);
                         break;
                     case 4:
-                        reportRepo.get().forEach(r -> System.out.println(r.show_details()));
+                        if (reportRepo.get().isEmpty()) {
+                            System.out.println("\nNão há relatórios");
+                            break;
+                        }
+                        System.out.println("\n#ID | TIPO | DATA - INFO | TOTAL DE FALHAS | ÚLTIMAS FALHAS");
+                        createReportOnRepo(reportRepo);
                         break;
                     case 5:
                         return -1;
@@ -144,6 +152,7 @@ public class Menu {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Valor Inválido");
+                scan.next();
             }
         }
     }
@@ -151,19 +160,11 @@ public class Menu {
     private int startAdm() {
         var scan = new Scanner(System.in);
         var opcao = -1;
+        LOGGER.info("Iniciando sistema como Administrador.");
 
         while (true) {
             try {
-                System.out.println("""
-                        1. Criar falha
-                        2. Listar falhas
-                        3. Criar operador
-                        4. Listar operadores
-                        5. Criar relatorios
-                        6. Lista relatorios
-                        7. Voltar para o login
-                        0. Sair
-                        """);
+                Screen.systemAdm();
                 opcao = scan.nextInt();
 
                 switch (opcao) {
@@ -173,15 +174,30 @@ public class Menu {
                         createFailureOnRepo(failureRepo);
                         break;
                     case 2:
+                        if (failureRepo.get().isEmpty()) {
+                            System.out.println("\nNão há falhas");
+                            break;
+                        }
+                        System.out.println("\n#ID | TIPO | DATA | STATUS | DESCRIÇÃO");
                         failureRepo.get().forEach(f -> System.out.println(f.show_details()));
                         break;
                     case 3:
                         createUserOnRepo(userRepo);
                         break;
                     case 4:
+                        if (userRepo.get().isEmpty()) {
+                            System.out.println("\nNão há usuários");
+                            break;
+                        }
+                        System.out.println("\n#ID | NOME | TURNO | INFO");
                         userRepo.get().forEach(u -> System.out.println(u.show_details()));
                         break;
                     case 5:
+                        if (reportRepo.get().isEmpty()) {
+                            System.out.println("\nNão há relatórios");
+                            break;
+                        }
+                        System.out.println("\n#ID | TIPO | DATA - INFO | TOTAL DE FALHAS | ÚLTIMAS FALHAS");
                         createReportOnRepo(reportRepo);
                         break;
                     case 6:
@@ -194,6 +210,7 @@ public class Menu {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Valor Inválido");
+                scan.next();
             }
         }
     }
@@ -202,19 +219,14 @@ public class Menu {
         var scan = new Scanner(System.in);
         var opcao = -1;
 
-        System.out.println("Bem vindo ao sistema");
-        try {
-            while (true) {
+        while (true) {
+            try {
                 if (opcao == 0) {
                     System.out.println("Saindo...");
                     break;
                 }
-                System.out.println("""
-                        Escolha um:
-                        1. Operador
-                        2. Administrador
-                        0. Sair
-                        """);
+
+                Screen.login();
                 opcao = scan.nextInt();
 
                 switch (opcao) {
@@ -230,9 +242,11 @@ public class Menu {
                     default:
                         System.out.println("Opção inválida");
                 }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor Inválido");
+                scan.next();
             }
-        } catch (InputMismatchException e) {
-            System.out.println("Valor Inválido");
         }
+
     }
 }

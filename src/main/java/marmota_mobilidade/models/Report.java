@@ -2,13 +2,12 @@ package marmota_mobilidade.models;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import marmota_mobilidade.app.Screen;
 import marmota_mobilidade.repositories.FailureRepo;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -53,16 +52,37 @@ public class Report extends _BaseEntity {
                         .toArray(String[]::new);
                 break;
             case PERIODO:
+                var dateRegex = "\\d{2}[^0-9]\\d{2}[^0-9]\\d{4}";
                 var scan1 = new Scanner(System.in);
 
-                System.out.println("Digite a data inicial:");
-                var inicialDate = LocalDateTime.parse("%sT00:00:00".formatted(scan1.nextLine()));
+                LocalDateTime inicialDate = null;
+                while (inicialDate == null) {
+                    System.out.println("Digite a data inicial:");
+                    while (!scan1.hasNext(dateRegex)) {
+                        System.out.println("Formato inválido! Tente novamente. (dd-mm-aaaa)");
+                        scan1.next();
+                    }
+                    inicialDate = LocalDateTime.parse("%sT00:00:00".formatted(scan1.next()
+                            .replaceAll("[^0-9]", "-")
+                            .replaceAll("(\\d{2})-(\\d{2})-(\\d{4})", "$3-$2-$1")));
+                }
 
-                System.out.println("Digite a data final:");
-                var finalDate = LocalDateTime.parse("%sT23:59:59".formatted(scan1.nextLine()));
+                LocalDateTime finalDate = null;
+                while (finalDate == null) {
+                    System.out.println("Digite a data final:");
+                    while (!scan1.hasNext(dateRegex)) {
+                        System.out.println("Formato inválido! Tente novamente. (dd-mm-aaaa)");
+                        scan1.next();
+                    }
+                    finalDate = LocalDateTime.parse("%sT23:59:59".formatted(scan1.next()
+                            .replaceAll("[^0-9]", "-")
+                            .replaceAll("(\\d{2})-(\\d{2})-(\\d{4})", "$3-$2-$1")));
+                }
 
+                LocalDateTime finalInicialDate = inicialDate;
+                LocalDateTime finalDate1 = finalDate;
                 var filteredFailures1 = failures.stream()
-                        .filter(f -> f.getRegistrationDate().isBefore(finalDate) && f.getRegistrationDate().isAfter(inicialDate))
+                        .filter(f -> f.getRegistrationDate().isBefore(finalDate1) && f.getRegistrationDate().isAfter(finalInicialDate))
                         .toList();
 
                 this.numberOfFailures = filteredFailures1.size();
@@ -78,29 +98,33 @@ public class Report extends _BaseEntity {
             case TIPO_DE_FALHA:
                 var scan2 = new Scanner(System.in);
 
-                System.out.println("""
-                        1. Mecânica
-                        2. Elétrica
-                        3. Software
-                        4. Outro
-                        """);
-                var failureType = FAILURE_TYPE.fromNumber(scan2.nextInt());
-                scan2.nextLine();
+                while (true) {
+                    try {
+                        Screen.failureTypes();
+                        var failureType = FAILURE_TYPE.fromNumber(scan2.nextInt());
+                        scan2.nextLine();
 
-                var filteredFailures2 = failures.stream()
-                        .filter(f -> f.getFailureType() == failureType)
-                        .toList();
+                        var filteredFailures2 = failures.stream()
+                                .filter(f -> f.getFailureType() == failureType)
+                                .toList();
 
-                this.numberOfFailures = filteredFailures2.size();
+                        this.numberOfFailures = filteredFailures2.size();
 
-                this.reportData = String.valueOf(failureType);
+                        this.reportData = String.valueOf(failureType);
 
-                this.lastFailures = filteredFailures2.stream()
-                        .sorted(Comparator.comparing(Failure::getRegistrationDate).reversed())
-                        .limit(5)
-                        .map(Failure::show_details)
-                        .toArray(String[]::new);
-                break;
+                        this.lastFailures = filteredFailures2.stream()
+                                .sorted(Comparator.comparing(Failure::getRegistrationDate).reversed())
+                                .limit(5)
+                                .map(Failure::show_details)
+                                .toArray(String[]::new);
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println("Valor inválida");
+                        scan2.next();
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Opção inválida");
+                    }
+                }
 
         }
         return this;
@@ -108,6 +132,6 @@ public class Report extends _BaseEntity {
 
     @Override
     public String show_details() {
-        return "Relatório #%s - %s | (%s) - (%s) | N° de falhas: %s - %s".formatted(this.getId(), this.getReportType(), this.getGenerationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")),this.getReportData(), this.getNumberOfFailures(), this.getLastFailures());
+        return "Relatório #%s - %s | (%s) - (%s) | N° de falhas: %s - %s".formatted(this.getId(), this.getReportType(), this.getGenerationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")), this.getReportData(), this.getNumberOfFailures(), Arrays.toString(this.getLastFailures()));
     }
 }
