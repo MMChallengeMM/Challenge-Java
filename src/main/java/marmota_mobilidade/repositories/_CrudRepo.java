@@ -1,6 +1,7 @@
 package marmota_mobilidade.repositories;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface _CrudRepo<T> {
     /**
@@ -16,7 +17,7 @@ public interface _CrudRepo<T> {
     /**
      * Remove um objeto especifico (id) de uma lista (sem apagar da lista)
      */
-    void removeById(String id);
+    void removeById(UUID id);
 
     /**
      * Remove um objeto de uma lista (APAGANDO da lista)
@@ -27,7 +28,7 @@ public interface _CrudRepo<T> {
     /**
      * Remove um objeto especifico (id) de uma lista (APAGANDO da lista)
      */
-    void deleteById(String id);
+    void deleteById(UUID id);
 
     /**
      * Retorna a lista comlpleta (deletados e não deletados)
@@ -42,5 +43,5 @@ public interface _CrudRepo<T> {
     /**
      * Retorna um objeto especifico (id)
      */
-    T getById(String id);
+    T getById(UUID id);
 }

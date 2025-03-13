@@ -3,13 +3,15 @@ package marmota_mobilidade.models;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @ToString
 public abstract class _BaseEntity {
     @NonNull
-    private String id;
+    private UUID id;
     @Builder.Default
     private boolean deleted = false;
 

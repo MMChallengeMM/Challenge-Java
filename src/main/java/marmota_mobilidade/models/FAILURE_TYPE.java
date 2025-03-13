@@ -1,8 +1,10 @@
 package marmota_mobilidade.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum FAILURE_TYPE {
     MECANICA(1),
     ELETRICA(2),
@@ -10,10 +12,6 @@ public enum FAILURE_TYPE {
     OUTRO(4);
 
     private final int num;
-
-    FAILURE_TYPE(int num) {
-        this.num = num;
-    }
 
     public static FAILURE_TYPE fromNumber(int num) {
         for (FAILURE_TYPE tipo : FAILURE_TYPE.values()) {

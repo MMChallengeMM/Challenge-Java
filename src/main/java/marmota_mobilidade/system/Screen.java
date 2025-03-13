@@ -1,4 +1,4 @@
-package marmota_mobilidade.app;
+package marmota_mobilidade.system;
 
 public class Screen {
 
@@ -61,6 +61,16 @@ public class Screen {
                     Digite o tipo de usuário:
                     1. Operador
                     2. Adm
+                    ---------------------------""");
+    }
+
+    public static void userShifts() {
+        System.out.println("""
+                    
+                    Digite o tipo de usuário:
+                    1. Manhã
+                    2. Tarde
+                    3. Noite
                     ---------------------------""");
     }
 

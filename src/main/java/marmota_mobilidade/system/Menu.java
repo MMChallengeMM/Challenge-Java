@@ -1,4 +1,4 @@
-package marmota_mobilidade.app;
+package marmota_mobilidade.system;
 
 import marmota_mobilidade.models.*;
 import marmota_mobilidade.repositories.FailureRepo;
@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Menu {
     private final UserRepo userRepo = new UserRepo();
@@ -22,8 +23,8 @@ public class Menu {
         try {
             LOGGER.info("Iniciando criação de relatorio.");
 
-            var id = String.valueOf(repo.getAll().size() + 1);
-            LOGGER.debug("Id #{} criado com sucessor.", id);
+            var id = UUID.randomUUID();
+            LOGGER.debug("Id aleatório de relatório criado com sucesso.");
 
             Screen.reportTypes();
             var reportType = REPORT_TYPE.fromNumber(scan.nextInt());
@@ -31,13 +32,13 @@ public class Menu {
             LOGGER.debug("Tipo de relatório criado com sucesso: {}", reportType);
 
             var reportIncomplete = Report.builder().id(id).reportType(reportType).build();
-            LOGGER.debug("Relaório #{} iniciado.", id);
+            LOGGER.debug("Relaório iniciado.");
 
             var fullReport = reportIncomplete.generateData(failureRepo);
             failureRepo.get().forEach(f -> f.setOnGeneralReport(true));
 
             repo.add(fullReport);
-            LOGGER.info("Relatório #{} criado com sucesso.", id);
+            LOGGER.info("Relatório criado com sucesso.");
 
         } catch (InputMismatchException e) {
             LOGGER.error("Erro na seleção de tipo de relatório: {}", e.getMessage(), e);
@@ -52,27 +53,51 @@ public class Menu {
         var scan = new Scanner(System.in);
 
         try {
-            var id = String.valueOf(repo.getAll().size() + 1);
+            LOGGER.info("Iniciando criação de usuário.");
+
+            var id = UUID.randomUUID();
+            LOGGER.debug("Id aleatório de usuário criado com sucesso.");
 
             System.out.println("\nDigite o nome do usuário:");
-            var name = scan.nextLine();
+            var name = scan.nextLine().trim();
+            LOGGER.debug("Nome criado com sucesso;");
+
+            Screen.reportTypes();
+            var userShift = USER_SHIFT.fromNumber(scan.nextInt());
+            scan.nextLine();
+            LOGGER.debug("Turno do usário criado com sucesso");
 
             Screen.userTypes();
             var opcao = scan.nextInt();
 
             switch (opcao) {
                 case 1:
-                    repo.add(Operator.builder().id(id).name(name).build());
+                    LOGGER.info("Iniciando criação de operador.");
+                    repo.add(Operator.builder()
+                            .id(id)
+                            .name(name)
+                            .userShift(userShift)
+                            .build());
+                    LOGGER.debug("Operador adicionado");
                     break;
                 case 2:
-                    repo.add(Admin.builder().id(id).name(name).build());
+                    LOGGER.info("Iniciando criação de adminsrador.");
+                    repo.add(Admin.builder()
+                            .id(id)
+                            .name(name)
+                            .userShift(userShift)
+                            .build());
+                    LOGGER.debug("Administrador adicionado");
                     break;
                 default:
                     System.out.println("Opção Inválida");
             }
         } catch (InputMismatchException e) {
-            LOGGER.error("Erro na seleção", e);
-            System.out.println("Opção Inválida");
+            LOGGER.error("Erro na seleção de tipo de relatório: {}", e.getMessage(), e);
+            System.out.println("Valor Inválido");
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Número fora das opções: {}", e.getMessage(), e);
+            System.out.println("Opção inválida");
         }
     }
 
@@ -82,8 +107,8 @@ public class Menu {
         try {
             LOGGER.info("Iniciando criação de falha");
 
-            var id = String.valueOf(repo.getAll().size() + 1);
-            LOGGER.debug("Id #{} criado com sucesso", id);
+            var id = UUID.randomUUID();
+            LOGGER.debug("Id aleatório de falha criado com sucesso.");
 
             Screen.failureTypes();
             var failType = FAILURE_TYPE.fromNumber(scan.nextInt());
@@ -92,14 +117,15 @@ public class Menu {
 
             System.out.println("Descreva a falha:");
             var description = scan.nextLine();
+            LOGGER.debug("Descrição criada com sucessso");
 
             repo.add(Failure.builder()
                     .id(id)
                     .failureType(failType)
                     .failureDescription(description)
                     .build());
-            LOGGER.info("Falha #{} criada com sucesso.", id);
-            System.out.printf("Falha #%s adicionada ao sistema.%n", id);
+            LOGGER.info("Falha adiciona com sucesso");
+            System.out.println("Falha adicionada ao sistema");
 
         } catch (InputMismatchException e) {
             LOGGER.error("Erro na seleção de tipo de falha: {}", e.getMessage(), e);

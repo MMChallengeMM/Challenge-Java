@@ -2,7 +2,7 @@ package marmota_mobilidade.models;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import marmota_mobilidade.app.Screen;
+import marmota_mobilidade.system.Screen;
 import marmota_mobilidade.repositories.FailureRepo;
 
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
 package marmota_mobilidade;
 
-import marmota_mobilidade.app.Menu;
+import marmota_mobilidade.system.Menu;
 
 public class
 Main {
