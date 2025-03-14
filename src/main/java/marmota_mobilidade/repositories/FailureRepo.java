@@ -6,6 +6,7 @@ import marmota_mobilidade.models.FAILURE_TYPE;
 import marmota_mobilidade.models.Failure;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,12 +17,13 @@ public class FailureRepo implements _CrudRepo<Failure> {
     @Override
     public void add(Failure object) {
 //        failures.add(object);
-        var query = "Insert into FALHAS (id, failureType, failureDescription) values (?,?,?)";
+        var query = "Insert into FALHAS (id, failureType, failureDescription, registrationDate) values (?,?,?,?)";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setString(1, object.getId().toString());
             stmt.setInt(2, object.getFailureType().getNum());
             stmt.setString(3, object.getFailureDescription());
+            stmt.setTimestamp(4, Timestamp.valueOf(object.getRegistrationDate()));
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Erro ao inserir falha");
