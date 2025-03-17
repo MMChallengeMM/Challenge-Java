@@ -1,33 +1,44 @@
 package marmota_mobilidade.repositories;
 
 import marmota_mobilidade.infrastructure.DatabaseConfig;
-import marmota_mobilidade.models.*;
+import marmota_mobilidade.models.REPORT_TYPE;
+import marmota_mobilidade.models.Report;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 public class ReportRepo implements _CrudRepo<Report> {
 
+    private static final Logger LOGGER = LogManager.getLogger(ReportRepo.class);
+
     public void add(Report object) {
 //        reports.add(object);
 
-        var query1 = "Insert into RELATORIOS (id, reportType, generationDate, numberOfFailures, reportData) values (?,?,?,?,?)";
-        // query2 para adicionar as ultimas 5 falhas na tabela Relatorio_Falhas
+        var query1 = "INSERT INTO RELATORIOS (id, reportType, generationDate, numberOfFailures, reportData) VALUES (?,?,?,?,?)";
+
         try (var connection = DatabaseConfig.getConnection()) {
-            var stmt1 = connection.prepareStatement(query1);
-            stmt1.setString(1, object.getId().toString());
-            stmt1.setInt(2, object.getReportType().getNum());
-            stmt1.setTimestamp(3, Timestamp.valueOf(object.getGenerationDate()));
-            stmt1.setInt(4, object.getNumberOfFailures());
-            stmt1.setString(5, object.getReportData());
-            stmt1.executeUpdate();
-            // executar o query para inserir na tabela Relatorio_Falhas
+            connection.setAutoCommit(false);
+
+            try (var stmt1 = connection.prepareStatement(query1)) {
+
+                // Inserção na tabela RELATORIOS
+                stmt1.setString(1, object.getId().toString());
+                stmt1.setInt(2, object.getReportType().getNum());
+                stmt1.setTimestamp(3, Timestamp.valueOf(object.getGenerationDate()));
+                stmt1.setInt(4, object.getNumberOfFailures());
+                stmt1.setString(5, object.getReportData());
+                stmt1.executeUpdate();
+            }
+
+            connection.commit();
         } catch (SQLException e) {
-            System.out.println("Erro ao inserir falha");
+            LOGGER.error("Erro ao adicionar relatório: {}", e.getMessage());
+            System.out.println("Erro ao inserir relatório");
         }
     }
 
@@ -58,7 +69,8 @@ public class ReportRepo implements _CrudRepo<Report> {
                 System.out.println("Relatorio não encontrado");
             }
         } catch (SQLException e) {
-            System.out.println("Errinho sql");
+            LOGGER.error("Erro ao remover relatório: {}", e.getMessage());
+            System.out.println("Erro ao remover relatório");
         }
     }
 
@@ -82,7 +94,8 @@ public class ReportRepo implements _CrudRepo<Report> {
                 System.out.println("Realtorio não encontrado");
             }
         } catch (SQLException e) {
-            System.out.println("Errinho sql");
+            LOGGER.error("Erro ao deletar relatório: {}", e.getMessage());
+            System.out.println("Erro ao deletar relatório");
         }
     }
 
@@ -103,14 +116,12 @@ public class ReportRepo implements _CrudRepo<Report> {
                         .generationDate(result.getTimestamp("generationDate").toLocalDateTime())
                         .numberOfFailures(result.getInt("numberOfFailures"))
                         .build();
-                var lastFailures = new String[5];
-                //Query para a tabela Relatorio_Falhas para pegar quais falas esão nesse relatorio
-                report.setLastFailures(lastFailures);
                 reportList.add(report);
 
             }
         } catch (SQLException e) {
-            System.out.println("WLELEE");
+            LOGGER.error("Erro ao recuperar relatórios: {}", e.getMessage());
+            System.out.println("Erro ao recuperar relatórios");
         }
         return reportList;
     }
@@ -122,7 +133,7 @@ public class ReportRepo implements _CrudRepo<Report> {
 //                .toList();
 
         var reportList = new ArrayList<Report>();
-        var query = "SELECT * FROM relatorios WHERE deleted = 0";
+        var query = "SELECT * FROM relatorios WHERE DELETED = 0";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.createStatement();
             var result = stmt.executeQuery(query);
@@ -131,18 +142,16 @@ public class ReportRepo implements _CrudRepo<Report> {
                 var report = Report.builder()
                         .id(UUID.fromString(result.getString("id")))
                         .deleted(result.getBoolean("deleted"))
-                        .reportData(result.getString("reporData"))
+                        .reportData(result.getString("reportData"))
                         .reportType(REPORT_TYPE.fromNumber(result.getInt("reportType")))
                         .generationDate(result.getTimestamp("generationDate").toLocalDateTime())
                         .numberOfFailures(result.getInt("numberOfFailures"))
                         .build();
-                var lastFailures = new String[5];
-                //Query para a tabela Relatorio_Falhas para pegar quais falas esão nesse relatorio
-                report.setLastFailures(lastFailures);
                 reportList.add(report);
             }
         } catch (SQLException e) {
-            System.out.println("WLELEE");
+            LOGGER.error("Erro ao recuperar relatório: {}", e.getMessage());
+            System.out.println("Erro ao recuperar relatório");
         }
         return reportList;
     }
@@ -170,12 +179,13 @@ public class ReportRepo implements _CrudRepo<Report> {
                         .reportData(result.getString("reportData"))
                         .build();
             } else {
-                throw new NoSuchElementException("Relatório não encontrado.");
+                System.out.println("Relatório n]ao encontrado.");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar relatório no banco de dados.", e);
+            LOGGER.error("Erro ao recuperar relatório especifico: {}", e.getMessage());
+            System.out.println("Erro ao recuperar relatório");
         }
+        return null;
     }
 }

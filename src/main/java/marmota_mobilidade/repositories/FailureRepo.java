@@ -103,7 +103,7 @@ public class FailureRepo implements _CrudRepo<Failure> {
                 failureList.add(falha);
             }
         } catch (SQLException e) {
-            System.out.println("WLELEE");
+            System.out.println(e);
         }
         return failureList;
     }
@@ -121,7 +121,7 @@ public class FailureRepo implements _CrudRepo<Failure> {
                 failureList.add(falha);
             }
         } catch (SQLException e) {
-            System.out.println("WLELEE");
+            System.out.println(e);
         }
         return failureList;
     }

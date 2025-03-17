@@ -21,7 +21,6 @@ public class Report extends _BaseEntity {
     private LocalDateTime generationDate;
     private int numberOfFailures;
     private String reportData;
-    private String[] lastFailures = new String[5];
 
     public Report generateData(FailureRepo repo) {
         var failures = repo.get();
@@ -44,12 +43,6 @@ public class Report extends _BaseEntity {
                         .map(Map.Entry::getKey)
                         .map(String::valueOf)
                         .orElse("Não há novas falhas para reportar.");
-
-                this.lastFailures = generalFailures.stream()
-                        .sorted(Comparator.comparing(Failure::getRegistrationDate).reversed())
-                        .limit(5)
-                        .map(Failure::show_details)
-                        .toArray(String[]::new);
                 break;
             case PERIODO:
                 var dateRegex = "\\d{2}[^0-9]\\d{2}[^0-9]\\d{4}";
@@ -88,12 +81,6 @@ public class Report extends _BaseEntity {
                 this.numberOfFailures = filteredFailures1.size();
 
                 this.reportData = "De: %s-Até: %s".formatted(inicialDate.format(DateTimeFormatter.ofPattern("dd/MM/yy")), finalDate.format(DateTimeFormatter.ofPattern("dd/MM/yy")));
-
-                this.lastFailures = filteredFailures1.stream()
-                        .sorted(Comparator.comparing(Failure::getRegistrationDate).reversed())
-                        .limit(5)
-                        .map(Failure::show_details)
-                        .toArray(String[]::new);
                 break;
             case TIPO_DE_FALHA:
                 var scan2 = new Scanner(System.in);
@@ -111,12 +98,6 @@ public class Report extends _BaseEntity {
                         this.numberOfFailures = filteredFailures2.size();
 
                         this.reportData = String.valueOf(failureType);
-
-                        this.lastFailures = filteredFailures2.stream()
-                                .sorted(Comparator.comparing(Failure::getRegistrationDate).reversed())
-                                .limit(5)
-                                .map(Failure::show_details)
-                                .toArray(String[]::new);
                         break;
                     } catch (InputMismatchException e) {
                         System.out.println("Valor inválida");
@@ -132,6 +113,7 @@ public class Report extends _BaseEntity {
 
     @Override
     public String show_details() {
-        return "Relatório #%s - %s | (%s) - (%s) | N° de falhas: %s - %s".formatted(this.getId(), this.getReportType(), this.getGenerationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")), this.getReportData(), this.getNumberOfFailures(), Arrays.toString(this.getLastFailures()));
+
+        return "Relatório #%s - %s | (%s) - (%s) | N° de falhas: %s".formatted(this.getId(), this.getReportType(), this.getGenerationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")), this.getReportData(), this.getNumberOfFailures());
     }
 }

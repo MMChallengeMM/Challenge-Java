@@ -62,7 +62,7 @@ public class Menu {
             var name = scan.nextLine().trim();
             LOGGER.debug("Nome criado com sucesso;");
 
-            Screen.reportTypes();
+            Screen.userShifts();
             var userShift = USER_SHIFT.fromNumber(scan.nextInt());
             scan.nextLine();
             LOGGER.debug("Turno do usário criado com sucesso");
@@ -219,14 +219,15 @@ public class Menu {
                         userRepo.get().forEach(u -> System.out.println(u.show_details()));
                         break;
                     case 5:
+
+                        createReportOnRepo(reportRepo);
+                        break;
+                    case 6:
                         if (reportRepo.get().isEmpty()) {
                             System.out.println("\nNão há relatórios");
                             break;
                         }
                         System.out.println("\n#ID | TIPO | DATA - INFO | TOTAL DE FALHAS | ÚLTIMAS FALHAS");
-                        createReportOnRepo(reportRepo);
-                        break;
-                    case 6:
                         reportRepo.get().forEach(r -> System.out.println(r.show_details()));
                         break;
                     case 7:
