@@ -49,3 +49,45 @@
 2025-03-17 18:14:55 [main] INFO  marmota_mobilidade.system.Menu - Iniciando criação de relatorio. 
 2025-03-17 18:15:12 [main] INFO  marmota_mobilidade.system.Menu - Relatório criado com sucesso. 
 2025-03-17 18:18:02 [main] INFO  marmota_mobilidade.system.Menu - Iniciando criação de relatorio. 
+2025-03-20 10:03:20 [main] INFO  marmota_mobilidade.system.Menu - Iniciando sistema como operador. 
+2025-03-20 10:03:21 [main] INFO  marmota_mobilidade.system.Menu - Iniciando criação de falha 
+2025-03-20 10:03:23 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Criando falha: 0c9c5601-6767-48be-bb10-63b66dfa7130 
+2025-03-20 10:03:24 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falha adicionada com sucesso: 0c9c5601-6767-48be-bb10-63b66dfa7130 
+2025-03-20 10:03:24 [main] INFO  marmota_mobilidade.system.Menu - Falha adiciona com sucesso 
+2025-03-20 10:03:27 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:03:28 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:03:28 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:03:28 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:03:39 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:03:39 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:03:39 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:03:39 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:03:49 [main] INFO  marmota_mobilidade.system.Menu - Iniciando criação de falha 
+2025-03-20 10:03:53 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Criando falha: 4e65b800-19e4-423b-9b9d-086b70ee3774 
+2025-03-20 10:03:53 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falha adicionada com sucesso: 4e65b800-19e4-423b-9b9d-086b70ee3774 
+2025-03-20 10:03:53 [main] INFO  marmota_mobilidade.system.Menu - Falha adiciona com sucesso 
+2025-03-20 10:03:54 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:03:55 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:03:55 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:03:55 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:04:02 [main] INFO  marmota_mobilidade.system.Menu - Iniciando criação de falha 
+2025-03-20 10:04:06 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Criando falha: 2e5440e3-f02d-4eaf-9ef6-d01ca665db16 
+2025-03-20 10:04:06 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falha adicionada com sucesso: 2e5440e3-f02d-4eaf-9ef6-d01ca665db16 
+2025-03-20 10:04:06 [main] INFO  marmota_mobilidade.system.Menu - Falha adiciona com sucesso 
+2025-03-20 10:04:07 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:04:07 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:04:07 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:04:07 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:04:20 [main] INFO  marmota_mobilidade.system.Menu - Iniciando criação de falha 
+2025-03-20 10:04:29 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Criando falha: 6557f41f-80be-4d70-8409-3decca212387 
+2025-03-20 10:04:29 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falha adicionada com sucesso: 6557f41f-80be-4d70-8409-3decca212387 
+2025-03-20 10:04:29 [main] INFO  marmota_mobilidade.system.Menu - Falha adiciona com sucesso 
+2025-03-20 10:04:31 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:04:31 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:04:31 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Buscando falhas não apagadas no banco de dados. 
+2025-03-20 10:04:31 [main] INFO  marmota_mobilidade.repositories.FailureRepo - Falhas não apagados encontrados. 
+2025-03-20 10:04:38 [main] INFO  marmota_mobilidade.system.Menu - Iniciando sistema como Administrador. 
+2025-03-20 10:04:41 [main] INFO  marmota_mobilidade.repositories.ReportRepo - Buscando relatórios não apagados no banco de dados. 
+2025-03-20 10:04:41 [main] INFO  marmota_mobilidade.repositories.ReportRepo - Relatórios não apagados encontrados. 
+2025-03-20 10:04:41 [main] INFO  marmota_mobilidade.repositories.ReportRepo - Buscando relatórios não apagados no banco de dados. 
+2025-03-20 10:04:41 [main] INFO  marmota_mobilidade.repositories.ReportRepo - Relatórios não apagados encontrados. 
