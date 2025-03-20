@@ -39,15 +39,15 @@ Permite que administradores adicionem e removam usuários no sistema.
 
 ## Protótipo
 ### Tela de Login
-![Tela de Login](imagens/tela-login.png)
+![Tela de Login](tela-login.png)
 **Descrição:** O usuário insere suas credenciais para acessar o sistema.
 
 ### Tela de Cadastro de Falhas
-![Cadastro de Falhas](imagens/tela-cadastro-falhas.png)
+![Cadastro de Falhas](tela-cadastro-falhas.png)
 **Descrição:** Permite que o operador registre uma nova falha, selecionando o tipo e adicionando uma descrição.
 
 ### Tela de Relatórios
-![Tela de Relatórios](imagens/tela-relatorios.png)
+![Tela de Relatórios](tela-relatorios.png)
 **Descrição:** Exibe um resumo das falhas registradas e permite gerar relatórios detalhados.
 
 ---
