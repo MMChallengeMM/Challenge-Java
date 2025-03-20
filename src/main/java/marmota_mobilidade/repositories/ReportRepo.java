@@ -17,25 +17,24 @@ public class ReportRepo implements _CrudRepo<Report> {
     private static final Logger LOGGER = LogManager.getLogger(ReportRepo.class);
 
     public void add(Report object) {
-//        reports.add(object);
 
-        var query1 = "INSERT INTO RELATORIOS (id, reportType, generationDate, numberOfFailures, reportData) VALUES (?,?,?,?,?)";
+        LOGGER.info("Criando relatório {}", object.getId());
+
+        var query = "INSERT INTO RELATORIOS (id, reportType, generationDate, numberOfFailures, reportData) VALUES (?,?,?,?,?)";
 
         try (var connection = DatabaseConfig.getConnection()) {
-            connection.setAutoCommit(false);
 
-            try (var stmt1 = connection.prepareStatement(query1)) {
+            var stmt = connection.prepareStatement(query);
 
-                // Inserção na tabela RELATORIOS
-                stmt1.setString(1, object.getId().toString());
-                stmt1.setInt(2, object.getReportType().getNum());
-                stmt1.setTimestamp(3, Timestamp.valueOf(object.getGenerationDate()));
-                stmt1.setInt(4, object.getNumberOfFailures());
-                stmt1.setString(5, object.getReportData());
-                stmt1.executeUpdate();
-            }
+            stmt.setString(1, object.getId().toString());
+            stmt.setInt(2, object.getReportType().getNum());
+            stmt.setTimestamp(3, Timestamp.valueOf(object.getGenerationDate()));
+            stmt.setInt(4, object.getNumberOfFailures());
+            stmt.setString(5, object.getReportData());
+            stmt.executeUpdate();
 
-            connection.commit();
+            LOGGER.info("Relatório adicionado com sucesso: {}", object.getId());
+
         } catch (SQLException e) {
             LOGGER.error("Erro ao adicionar relatório: {}", e.getMessage());
             System.out.println("Erro ao inserir relatório");
@@ -43,20 +42,17 @@ public class ReportRepo implements _CrudRepo<Report> {
     }
 
     public void remove(Report object) {
-//        reports.stream()
-//                .filter(r -> r == object)
-//                .findFirst()
-//                .ifPresent(r -> r.setDeleted(true));
+        LOGGER.info("Removendo relatório: {}", object.getId());
         var id = object.getId();
         removeById(id);
     }
 
     public void removeById(UUID id) {
-//        reports.stream()
-//                .filter(r -> r.getId().equals(id))
-//                .findFirst()
-//                .ifPresent(r -> r.setDeleted(true));
+
         var query = "Update Relatorios set deleted = ? where id = ?";
+
+        LOGGER.info("Removendo relatório pelo id: {}", id);
+
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, 1);
@@ -64,8 +60,10 @@ public class ReportRepo implements _CrudRepo<Report> {
             var result = stmt.executeUpdate();
 
             if (result == 1) {
-                System.out.println("Relatorio removido");
+                LOGGER.info("Relatório removido com sucesso: {}", id);
+                System.out.println("Relatorio removido.");
             } else {
+                LOGGER.warn("Relatório não encontrado para remoção: {}", id);
                 System.out.println("Relatorio não encontrado");
             }
         } catch (SQLException e) {
@@ -75,23 +73,27 @@ public class ReportRepo implements _CrudRepo<Report> {
     }
 
     public void delete(Report object) {
-//        reports.remove(object);
+        LOGGER.info("Deletando relatório: {}", object.getId());
         var id = object.getId();
         deleteById(id);
     }
 
     public void deleteById(UUID id) {
-//        reports.removeIf(r -> r.getId().equals(id));
-        var query = "Delete from Realtorios where id = ?";
+        var query = "Delete from Relatorios where id = ?";
+
+        LOGGER.info("Deletando relatório pelo id: {}", id);
+
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setString(1, id.toString());
             var result = stmt.executeUpdate();
 
             if (result == 1) {
+                LOGGER.info("Relatório deletado com sucesso: {}", id);
                 System.out.println("Relatorio deletado");
             } else {
-                System.out.println("Realtorio não encontrado");
+                LOGGER.warn("Relatório não encontrado para a deleção: {}", id);
+                System.out.println("Relatorio não encontrado");
             }
         } catch (SQLException e) {
             LOGGER.error("Erro ao deletar relatório: {}", e.getMessage());
@@ -99,10 +101,12 @@ public class ReportRepo implements _CrudRepo<Report> {
         }
     }
 
-    @Override
     public List<Report> getAll() {
         var reportList = new ArrayList<Report>();
         var query = "SELECT * FROM relatorios";
+
+        LOGGER.info("Buscando todos os relatórios no banco de dados");
+
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.createStatement();
             var result = stmt.executeQuery(query);
@@ -117,8 +121,10 @@ public class ReportRepo implements _CrudRepo<Report> {
                         .numberOfFailures(result.getInt("numberOfFailures"))
                         .build();
                 reportList.add(report);
-
             }
+            
+            LOGGER.info("Todas os relatórios recuperados do banco de dados com sucesso");
+
         } catch (SQLException e) {
             LOGGER.error("Erro ao recuperar relatórios: {}", e.getMessage());
             System.out.println("Erro ao recuperar relatórios");
@@ -126,14 +132,13 @@ public class ReportRepo implements _CrudRepo<Report> {
         return reportList;
     }
 
-    @Override
     public List<Report> get() {
-//        return reports.stream()
-//                .filter(r -> !r.isDeleted())
-//                .toList();
 
         var reportList = new ArrayList<Report>();
         var query = "SELECT * FROM relatorios WHERE DELETED = 0";
+
+        LOGGER.info("Buscando relatórios não apagados no banco de dados.");
+
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.createStatement();
             var result = stmt.executeQuery(query);
@@ -149,6 +154,9 @@ public class ReportRepo implements _CrudRepo<Report> {
                         .build();
                 reportList.add(report);
             }
+
+            LOGGER.info("Relatórios não apagados encontrados.");
+
         } catch (SQLException e) {
             LOGGER.error("Erro ao recuperar relatório: {}", e.getMessage());
             System.out.println("Erro ao recuperar relatório");
@@ -157,11 +165,11 @@ public class ReportRepo implements _CrudRepo<Report> {
     }
 
     public Report getById(UUID id) {
-//        return reports.stream()
-//                .filter(r -> r.getId().equals(id))
-//                .findFirst()
-//                .orElseThrow(() -> new NoSuchElementException("Falha não existe."));
+
         var query = "SELECT * FROM Relatorios WHERE id = ? AND deleted = 0";
+
+        LOGGER.info("Buscando relatório por id: {}", id);
+
         try (var connection = DatabaseConfig.getConnection();
              var stmt = connection.prepareStatement(query)) {
 
@@ -170,7 +178,7 @@ public class ReportRepo implements _CrudRepo<Report> {
             var result = stmt.executeQuery();
 
             if (result.next()) {
-                return Report.builder()
+                var report = Report.builder()
                         .id(UUID.fromString(result.getString("id")))
                         .deleted(result.getInt("deleted") == 1)
                         .reportType(REPORT_TYPE.fromNumber(result.getInt("reportType")))
@@ -178,8 +186,12 @@ public class ReportRepo implements _CrudRepo<Report> {
                         .numberOfFailures(result.getInt("numberOfFailures"))
                         .reportData(result.getString("reportData"))
                         .build();
+                        
+                LOGGER.info("Relatório por id encontrado: {}", id);
+                return report;
             } else {
-                System.out.println("Relatório n]ao encontrado.");
+                LOGGER.warn("Relatório não encontrado: {}", id);
+                System.out.println("Relatório não encontrado.");
             }
 
         } catch (SQLException e) {

@@ -9,15 +9,21 @@ import marmota_mobilidade.models.User;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class UserRepo implements _CrudRepo<User> {
 
-    @Override
+    private static final Logger LOGGER = LogManager.getLogger(ReportRepo.class);
+    
     public void add(User user) {
-//        users.add(object);
+
         String query = "INSERT INTO Usuarios (id, deleted, name, userShift, accessLevel, sector) VALUES (?, ?, ?, ?, ?, ?)";
+
+        LOGGER.info("Criando usuário: {}", user.getId());
+
         try (var connection = DatabaseConfig.getConnection();
              var stmt = connection.prepareStatement(query)) {
 
@@ -29,59 +35,61 @@ public class UserRepo implements _CrudRepo<User> {
             stmt.setString(6, (user instanceof Operator) ? ((Operator) user).getSector() : null);
 
             stmt.executeUpdate();
-            System.out.println("Usuário adicionado com sucesso.");
+            
+            LOGGER.info("Usuário adicionado com sucesso: {}", user.getId());
+
         } catch (SQLException e) {
-            System.out.println("Erro ao inserir o usuário: " + e.getMessage());
+            LOGGER.warn("Erro ao criar o usuário: {}", user.getId());
+            System.out.println("Erro ao criar o usuário");
         }
     }
 
-    @Override
+    
     public void remove(User user) {
-//        users.stream()
-//                .filter(u -> u == object)
-//                .findFirst()
-//                .ifPresent(u -> u.setDeleted(true));
+        LOGGER.info("Removendo usuário: {}", user.getId());
         removeById(user.getId());
     }
 
-    @Override
+    
     public void removeById(UUID id) {
-//        users.stream()
-//                .filter(u -> u.getId().equals(id))
-//                .findFirst()
-//                .ifPresent(u -> u.setDeleted(true));
+
         String query = "UPDATE Usuarios SET deleted = ? WHERE id = ?";
+
+        LOGGER.info("Removendo usuário por id: {}", id);
+
         try (var connection = DatabaseConfig.getConnection();
              var stmt = connection.prepareStatement(query)) {
 
-            stmt.setInt(1, 1); // Marca como deletado
+            stmt.setInt(1, 1);
             stmt.setString(2, id.toString());
             int result = stmt.executeUpdate();
 
             if (result == 1) {
+                LOGGER.info("Usuário removido com sucesso: {}", id);
                 System.out.println("Usuário removido com sucesso.");
             } else {
+                LOGGER.warn("Usuário não encontrado para remoção: {}", id);
                 System.out.println("Usuário não encontrado.");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao remover o usuário: " + e.getMessage());
+            LOGGER.error("Erro ao remover usuário: {}", id);
+            System.out.println("Erro ao remover o usuário");
         }
     }
 
-    @Override
+    
     public void delete(User user) {
-//        users.remove(object);
+        LOGGER.info("Deletando usuário: {}", user.getId());
         deleteById(user.getId());
     }
 
-    @Override
+    
     public void deleteById(UUID id) {
-//        users.removeIf(u -> u.getId().equals(id));
-//                .stream()
-//                .filter(u -> u.getIdUser().equals(id))
-//                .findFirst()
-//                .ifPresent(users::remove);
+
         String query = "DELETE FROM Usuarios WHERE id = ?";
+
+        LOGGER.info("Deletando usuário por id: {}", id);
+
         try (var connection = DatabaseConfig.getConnection();
              var stmt = connection.prepareStatement(query)) {
 
@@ -89,21 +97,26 @@ public class UserRepo implements _CrudRepo<User> {
             int result = stmt.executeUpdate();
 
             if (result == 1) {
+                LOGGER.info("Usuário deletado com sucesso: {}", id);
                 System.out.println("Usuário deletado com sucesso.");
             } else {
+                LOGGER.warn("Usuário não encontrado para deleção: {}", id);
                 System.out.println("Usuário não encontrado.");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao deletar o usuário: " + e.getMessage());
+            LOGGER.error("Erro ao deletar usuário: {}", id);
+            System.out.println("Erro ao deletar o usuário.");
         }
     }
 
-    @Override
+    
     public List<User> getAll() {
-//        return users;
 
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM Usuarios";
+        
+        LOGGER.info("Buscando todos os usuários no banco de dados");
+
         try (var connection = DatabaseConfig.getConnection();
              var stmt = connection.createStatement();
              var result = stmt.executeQuery(query)) {
@@ -135,20 +148,24 @@ public class UserRepo implements _CrudRepo<User> {
                             .build();
                 }
                 users.add(user);
+
+                LOGGER.info("Todas os usuários recuperados do banco de dados com sucesso");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao recuperar os usuários: " + e.getMessage());
+            LOGGER.error("Erro ao recuperar usuários: {}", e.getMessage());
+            System.out.println("Erro ao recuperar os usuários");
         }
         return users;
     }
 
-    @Override
+    
     public List<User> get() {
-//        return users.stream()
-//                .filter(u -> !u.isDeleted())
-//                .toList();
+
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM Usuarios WHERE deleted = 0";
+
+        LOGGER.info("Buscando usuários não apagados no banco de dados.");
+
         try (var connection = DatabaseConfig.getConnection();
              var stmt = connection.createStatement();
              var result = stmt.executeQuery(query)) {
@@ -179,21 +196,24 @@ public class UserRepo implements _CrudRepo<User> {
                             .accessLevel(accessLevel)
                             .build();
                 }
+                
+                LOGGER.info("Usuários não apagados encontrados.");
                 users.add(user);
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao recuperar os usuários ativos: " + e.getMessage());
+            LOGGER.error("Erro ao recuperar usuários ativos: {}", e.getMessage());
+            System.out.println("Erro ao recuperar os usuários ativos.");
         }
         return users;
     }
 
-    @Override
+    
     public User getById(UUID id) {
-//        return users.stream()
-//                .filter(u -> u.getId().equals(id))
-//                .findFirst()
-//                .orElseThrow(() -> new NoSuchElementException("Usuário não existe."));
+
         String query = "SELECT * FROM Usuarios WHERE id = ?";
+
+        LOGGER.info("Buscando usuário por id: {}", id);
+
         try (var connection = DatabaseConfig.getConnection();
              var stmt = connection.prepareStatement(query)) {
 
@@ -225,13 +245,17 @@ public class UserRepo implements _CrudRepo<User> {
                             .accessLevel(accessLevel)
                             .build();
                 }
+                
+                LOGGER.info("Usuário encontrado por id: {}", id);
                 return user;
             } else {
-                throw new NoSuchElementException("Usuário não encontrado.");
+                LOGGER.warn("Usuário não encontrado por id: {}", id);
+                System.out.println("Usuário não encontrado.");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao recuperar o usuário: " + e.getMessage());
-            return null;
+            LOGGER.error("Erro ao recuperar usuário especifico: {}", e.getMessage());
+            System.out.println("Erro ao recuperar usuário");
         }
+        return null;
     }
 }
